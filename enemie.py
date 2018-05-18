@@ -72,7 +72,7 @@ class Enemie(rectangle.Rectangle):
             effectAux.decDuration()
 
     def despawn(self, dodgeGame):
-        dodgeGame.delEnemie(self)
+        dodgeGame.killEnemie(self)
 
     def getTarget(self, dodgeGame):
         players = dodgeGame.getPlayers()
@@ -202,7 +202,7 @@ class PurpleEnemie(Enemie):
 
     def move(self, dodgeGame):
         if self.isOut():
-            dodgeGame.delEnemie(self)
+            dodgeGame.killEnemie(self)
         else:
             if self._direction == 1:
                 newPositionX = self._position[0] + (1 * self._speed)
@@ -240,7 +240,7 @@ class WhiteEnemie(Enemie):
 
     def move(self, dodgeGame):
         if self.isOut():
-            dodgeGame.delEnemie(self)
+            dodgeGame.killEnemie(self)
         else:
             if self._direction == 1:
                 newPositionY = self._position[1] + (1 * self._speed)
