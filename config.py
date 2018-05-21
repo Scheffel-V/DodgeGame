@@ -24,10 +24,12 @@ RIGHT_BUTTON = 3
 
 #MENU
 MENU_POINTER = "imagens/menu_pointer.png"
-MENU_BACKGROUND_IMAGE = "imagens/menu_background_image.png"
+MENU_BACKGROUND_IMAGE_0 = "imagens/menu_main_0.png"
+MENU_BACKGROUND_IMAGE_1 = "imagens/menu_main_1.png"
+MENU_BACKGROUND_IMAGE_2 = "imagens/menu_main_2.png"
 MAIN_MENU_FONT = "fonts/Colleged.ttf"
-MENU_WIDTH = 600
-MENU_HEIGHT = 600
+MENU_WIDTH = 460
+MENU_HEIGHT = 620
 
 #PLAYERS
 PLAYER_ONE_IMAGE = "imagens/enemy2.png"
@@ -68,3 +70,7 @@ ENEMIE_WHITE_IMAGE_big = "imagens/thundertower_big.png"
 ENEMIE_WHITE_WIDTH = 32
 ENEMIE_WHITE_HEIGHT = 32
 ENEMIE_WHITE_SPEED = 3
+
+ENEMIE_SCREEN_WIDTH = 32
+ENEMIE_SCREEN_HEIGHT = 32
+ENEMIE_SCREEN_SPEED = 0.7

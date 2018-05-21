@@ -5,6 +5,7 @@ import random
 import player as PLAYER
 import game as GAME
 import dodgegame as DODGEGAME
+import enemie as ENEMIE
 
 
 class Menu:
@@ -13,23 +14,52 @@ class Menu:
         self._gameExit = False
         self._optionPointer = [10, 100]
         self._optionImage = pygame.image.load(config.MENU_POINTER)
+        self._mainMenuImage0 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_0)
+        self._mainMenuImage1 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_1)
+        self._mainMenuImage2 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_2)
         self._selectedOption = 0
+        self._enemiesOnTheScreen = []
+        for i in range(0, 4):
+            self._enemiesOnTheScreen.append(self._generateEnemie())
+
 
     def _displayBackImage(self):
-        mainMenuImage= pygame.image.load(config.MENU_BACKGROUND_IMAGE)
+        if self._selectedOption == 0:
+            mainMenuImage = self._mainMenuImage0
+        elif self._selectedOption == 1:
+            mainMenuImage = self._mainMenuImage1
+        elif self._selectedOption == 2:
+            mainMenuImage = self._mainMenuImage2
+        else:
+            print("You somehow selected an invalid option.")
+
         self._gameDisplay.blit(mainMenuImage, (0, 0))
 
-    def _displayText(self):
-        myfont = pygame.font.Font(config.MAIN_MENU_FONT, 35)
+    def _displayEnemies(self):
+        for enemieAux in self._enemiesOnTheScreen:
+            enemieAux.move(self)
+            enemieAux.paint(self._gameDisplay)
 
-        newGame = myfont.render("START", 1, (255,0,0))
-        records = myfont.render("RECORDS", 1, (255,0,0))
-        exit = myfont.render("EXIT", 1, (255,0,0))
+    def _generateEnemie(self):
+        enemieType = random.randint(0, 5)
+        if enemieType == 0:
+            return ENEMIE.ScreenEnemie((10, 10), config.ENEMIE_WHITE_IMAGE_small)
+        elif enemieType == 1:
+            return ENEMIE.ScreenEnemie((10, 10), config.ENEMIE_RED_IMAGE_small)
+        elif enemieType == 2:
+            return ENEMIE.ScreenEnemie((10, 10), config.ENEMIE_PURPLE_IMAGE_small)
+        elif enemieType == 3:
+            return ENEMIE.ScreenEnemie((10, 10), config.ENEMIE_BLUE_IMAGE_small)
+        elif enemieType == 4:
+            return ENEMIE.ScreenEnemie((10, 10), config.ENEMIE_YELLOW_IMAGE_small)
+        else:
+            return ENEMIE.ScreenEnemie((10, 10), config.ENEMIE_GREEN_IMAGE_small)
 
-
-        self._gameDisplay.blit(newGame, (65, 100))
-        self._gameDisplay.blit(records, (65, 150))
-        self._gameDisplay.blit(exit, (65, 200))
+    def killEnemie(self, enemie):
+        if self._enemiesOnTheScreen.__contains__(enemie):
+            print("entrei")
+            self._enemiesOnTheScreen.remove(enemie)
+            self._enemiesOnTheScreen.append(self._generateEnemie())
 
     def _movePointerDown(self):
         self._optionPointer[1] += 50
@@ -112,15 +142,9 @@ class Menu:
         if event.key == pygame.K_SPACE:
             self._handleMenuPress()
 
-
-    def _displaySelectedOption(self):
-        self._gameDisplay.blit(self._optionImage, self._optionPointer)
-
     def _updateScreen(self):
-        self._displayBackImage();
-        self._displayText();
-        self._displaySelectedOption();
-
+        self._displayBackImage()
+        self._displayEnemies()
 
     def start(self):
         pygame.init()

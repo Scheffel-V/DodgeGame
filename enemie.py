@@ -251,3 +251,57 @@ class WhiteEnemie(Enemie):
 
     def getClass(self):
         return "WhiteEnemie"
+
+class ScreenEnemie(Enemie):
+    def __init__(self, position, image):
+        super(ScreenEnemie, self).__init__(position,
+                                           config.ENEMIE_SCREEN_WIDTH,
+                                           config.ENEMIE_SCREEN_HEIGHT,
+                                           image,
+                                           config.ENEMIE_SCREEN_SPEED)
+        self._side = random.randint(1, 2)
+        self._direction = random.randint(1,2) # 1 = down, 2 = up
+        randomPosition = None
+        if self._side == 1:
+            if self._direction == 1:
+                randomPosition = random.randint(0, config.MENU_WIDTH-1), 1
+            else:
+                randomPosition = random.randint(0, config.MENU_WIDTH-1), config.MENU_HEIGHT-1
+        else:
+            if self._direction == 1:
+                randomPosition = 1, random.randint(0, config.MENU_HEIGHT)
+            else:
+                randomPosition = config.MENU_WIDTH, random.randint(0, config.MENU_HEIGHT)
+
+        self.setPosition(randomPosition)
+
+    def isOut(self):
+        position = self.getPosition()
+        if 0 >= position[0] or position[0] >= config.MENU_WIDTH:
+             return True
+        elif 0 >= position[1] or position[1] >= config.MENU_HEIGHT:
+            return True
+        else:
+            return False
+
+    def move(self, menu):
+        if self.isOut():
+            menu.killEnemie(self)
+        else:
+            if self._side == 1:
+                if self._direction == 1:
+                    newPositionY = self._position[1] + (1 * self._speed)
+                    self.setPosition((self._position[0], newPositionY))
+                else:
+                    newPositionY = self._position[1] - (1 * self._speed)
+                    self.setPosition((self._position[0], newPositionY))
+            else:
+                if self._direction == 1:
+                    newPositionX = self._position[0] + (1 * self._speed)
+                    self.setPosition((newPositionX, self._position[1]))
+                else:
+                    newPositionX = self._position[0] - (1 * self._speed)
+                    self.setPosition((newPositionX, self._position[1]))
+
+    def getClass(self):
+        return "ScreenEnemie"
