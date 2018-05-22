@@ -1,11 +1,13 @@
 # coding=utf-8
 import pygame
+#import wiiuse.pygame_wiimote as pygame_wiimote
 
 import config
 import time
 import enemie
 import map
 import random
+
 
 
 # Classe DodgeGame:
