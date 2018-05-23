@@ -25,7 +25,7 @@ class DodgeGame:
         self._alivePlayersList.append(player)
         self._timer = 0
         self._endTimer = 5
-        self._enemieTimer = 1
+        self._enemieTimer = 1000
         self._gameIsRunning = True
         self._gameIsPaused = False
         self._gameTime = 0
@@ -97,7 +97,8 @@ class DodgeGame:
                 self.spawnEnemie(enemie.WhiteEnemie((0, 0)))
                 self.spawnEnemie(enemie.PurpleEnemie((0, 0)))
             self.paintEnemies(gameDisplay)
-            self.paintPlayers(gameDisplay, mousePosition)
+            if mousePosition is not None:
+                self.paintPlayers(gameDisplay, mousePosition)
             self.paintTime(gameDisplay)
 
     def paintMap(self, gameDisplay):

@@ -81,49 +81,8 @@ class Menu:
             self._selectedOption = 2
 
     def _startWiimoteMenu(self):
-        wiimoteMenu = WIIMOTEMENU.WiimoteMenu()
+        wiimoteMenu = WIIMOTEMENU.WiimoteMenu(pygame)
         wiimoteMenu.start()
-
-    def _startNewGame(self, playerName):
-        game = GAME.Game()
-        game.start()
-        player = PLAYER.Player("Vinicius", (100, 100), 50, 50, config.PLAYER_ONE_IMAGE)
-        dodgeGame = DODGEGAME.DodgeGame(player)
-
-        while not game.getGameExit():
-            mousePosition = game.getMousePosition()
-
-            for event in game.getEvents():
-                if event.type == pygame.QUIT:
-                    game.setGameExit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_f:
-                        if game.isFPSOn():
-                            game.turnOffFPS()
-                        else:
-                            game.turnOnFPS()
-                    if event.key == pygame.K_p:
-                        if dodgeGame.isRunning():
-                            if dodgeGame.isPaused():
-                                dodgeGame.resumeGame()
-                            else:
-                                dodgeGame.pauseGame()
-                elif event.type == pygame.USEREVENT + 1 and not dodgeGame.isPaused():
-                    dodgeGame.decTimer()
-
-            if dodgeGame.isRunning():
-                if dodgeGame.isPaused():
-                    dodgeGame.paintPauseGameMessage(game.getGameDisplay())
-                    game.getClock().tick()
-                    game.update()
-                else:
-                    dodgeGame.paintAllStuff(game.getGameDisplay(), mousePosition)
-                    game.paintAllStuff(game.getGameDisplay(), game.getClock())
-                    game.getClock().tick()
-                    game.update()
-                    game.getClock().tick(config.FPS)      # Determina o FPS máximo
-        game.quit()
-        quit()
 
     def _handleMenuPress(self):
         if self._selectedOption == 0:
@@ -181,9 +140,9 @@ class Menu:
 
         wm = pygame_wiimote.Wiimote(0) # access the wiimote object
         wm.enable_accels(1) # turn on acceleration reporting
-        wm.enable_ir(1, vres=(config.MENU_WIDTH, config.MENU_HEIGHT)) # turn on ir reporting
+        wm.enable_ir(1, vres=(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)) # turn on ir reporting
 
-        old = [config.MENU_HEIGHT/2] * 6
+        old = [config.DISPLAY_HEIGHT/2] * 6
         maxA = 2.0
 
         while not self._gameExit:
@@ -195,5 +154,8 @@ class Menu:
                 elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
                     print(event.button, 'pressed on', event.id)
                     self._handleWiimotePress(event)
+                elif event.type == pygame_wiimote.WIIMOTE_IR:
+                    print("ENTREI YEY")
+                    print(event.cursor[:2])
             self._updateScreen()
             pygame.display.update()
