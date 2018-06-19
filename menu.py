@@ -7,7 +7,6 @@ import player as PLAYER
 import game as GAME
 import dodgegame as DODGEGAME
 import enemie as ENEMIE
-import wiimotemenu as WIIMOTEMENU
 sys.path.insert(0, './pywiiuse')
 import wiiuse.pygame_wiimote as pygame_wiimote
 
@@ -20,6 +19,7 @@ class Menu:
         self._mainMenuImage1 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_1)
         self._mainMenuImage2 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_2)
         self._selectedOption = 0
+        self._numberOfPlayers = 0
         self._enemiesOnTheScreen = []
         for i in range(0, 4):
             self._enemiesOnTheScreen.append(self._generateEnemie())
@@ -59,7 +59,6 @@ class Menu:
 
     def killEnemie(self, enemie):
         if self._enemiesOnTheScreen.__contains__(enemie):
-            print("entrei")
             self._enemiesOnTheScreen.remove(enemie)
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
@@ -80,13 +79,13 @@ class Menu:
         if self._selectedOption < 0:
             self._selectedOption = 2
 
-    def _startWiimoteMenu(self):
-        wiimoteMenu = WIIMOTEMENU.WiimoteMenu(pygame)
-        wiimoteMenu.start()
+    def _startGame(self):
+        game = GAME.Game(pygame)
+        game.start(self._numberOfPlayers)
 
     def _handleMenuPress(self):
         if self._selectedOption == 0:
-            self._startWiimoteMenu()
+            self._startGame()
 
         elif self._selectedOption == 1:
             pass
@@ -131,19 +130,25 @@ class Menu:
         self._updateScreen()
 
         if os.name != 'nt': print('press 1&2')
-        pygame_wiimote.init(1, 5) # look for 1, wait 5 seconds
+        pygame_wiimote.init(2, 15) # look for 1, wait 5 seconds
         n = pygame_wiimote.get_count() # how many did we get?
 
         if n == 0:
             print('no wiimotes found')
             sys.exit(1)
 
-        wm = pygame_wiimote.Wiimote(0) # access the wiimote object
-        wm.enable_accels(1) # turn on acceleration reporting
-        wm.enable_ir(1, vres=(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)) # turn on ir reporting
+        self._numberOfPlayers = pygame_wiimote.get_count()
+        for i in range(0, self._numberOfPlayers):
+            print('Setting wiimote ', i + 1)
+            wm = pygame_wiimote.Wiimote(i)
+            wm.enable_accels(1)
+            wm.enable_ir(1, vres=(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT))
 
         old = [config.DISPLAY_HEIGHT/2] * 6
         maxA = 2.0
+        flag = False
+        flagCounter = None
+        idsList = []
 
         while not self._gameExit:
             for event in pygame.event.get():
@@ -155,7 +160,9 @@ class Menu:
                     print(event.button, 'pressed on', event.id)
                     self._handleWiimotePress(event)
                 elif event.type == pygame_wiimote.WIIMOTE_IR:
-                    print("ENTREI YEY")
-                    print(event.cursor[:2])
+                    if event.id not in idsList:
+                        print('Wiimote ', event.id, ' is ok!')
+                        idsList.append(event.id)
+                    #print(event.cursor[:2], event.id)
             self._updateScreen()
             pygame.display.update()

@@ -6,16 +6,10 @@ import pygame
 # Classe que define a profile do jogador atual, assim como os
 # atributos que ele tem da partida atual.
 class Player(rectangle.Rectangle):
-    def __init__(self, name, position, width, height, image):
+    def __init__(self, id, position, width, height, image):
         super(Player, self).__init__(position, width, height, image)
-        self._name = name
         self._isAlive = True
-
-    def getName(self):
-        return self._name
-
-    def setName(self, name):
-        self._name = name
+        self._id = id
 
     def kill(self, dodgeGame):
         self._isAlive = False
@@ -29,3 +23,6 @@ class Player(rectangle.Rectangle):
             if self.collide(enemieAux):
                 return True
         return False
+
+    def getId(self):
+        return self._id

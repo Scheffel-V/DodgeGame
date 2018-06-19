@@ -15,21 +15,19 @@ import random
 # a partida são realizadas.
 class DodgeGame:
 
-    def __init__(self, player):
-        self._playersList = []
-        self._alivePlayersList = []
+    def __init__(self, playerList):
+        self._alivePlayersList = playerList
         self._enemiesList = []
         self._loseGame = False
         self._FPS = False
-        self._playersList.append(player)
-        self._alivePlayersList.append(player)
+        self._playersList = playerList
         self._timer = 0
         self._endTimer = 5
-        self._enemieTimer = 1000
+        self._enemieTimer = 5
         self._gameIsRunning = True
         self._gameIsPaused = False
         self._gameTime = 0
-        self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, "imagens/espaco2.jpg")
+        self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, "imagens/black.jpg")
 
     def isRunning(self):
         return self._gameIsRunning
@@ -67,7 +65,7 @@ class DodgeGame:
 
     def spawnEnemie(self, enemie):
         self.addEnemie(enemie)
-        self._enemieTimer = 1
+        self._enemieTimer = 2
 
     def killEnemie(self, enemie):
         if self._enemiesList.__contains__(enemie):
@@ -89,16 +87,20 @@ class DodgeGame:
         else:
             return enemie.GreenEnemie(randomPosition)
 
-    def paintAllStuff(self, gameDisplay, mousePosition):
+    def paintAllStuff(self, gameDisplay, playerPosition):
         if not self._loseGame:
             self.paintMap(gameDisplay)
-            if self._enemieTimer == 0:
+            if self._enemieTimer <= 0:
                 self.spawnEnemie(self.getEnemieToSpawn())
-                self.spawnEnemie(enemie.WhiteEnemie((0, 0)))
-                self.spawnEnemie(enemie.PurpleEnemie((0, 0)))
+                randomNumber = random.randint(1, 2)
+                if randomNumber == 1:
+                    self.spawnEnemie(enemie.WhiteEnemie((0, 0)))
+                else:
+                    self.spawnEnemie(enemie.PurpleEnemie((0, 0)))
             self.paintEnemies(gameDisplay)
-            if mousePosition is not None:
-                self.paintPlayers(gameDisplay, mousePosition)
+            print(playerPosition)
+            if playerPosition is not None:
+                self.paintPlayers(gameDisplay, playerPosition)
             self.paintTime(gameDisplay)
 
     def paintMap(self, gameDisplay):
@@ -109,16 +111,17 @@ class DodgeGame:
             enemiesAux.move(self)
             enemiesAux.paint(gameDisplay)
 
-    def paintPlayers(self, gameDisplay, mousePosition):
+    def paintPlayers(self, gameDisplay, playerPosition):
         for playerAux in self.getAlivePlayers():
-            playerAux.setPosition(mousePosition)
-            playerAux.paint(gameDisplay)
-            if playerAux.isColliding(self.getEnemies()):
-                if self.isTheLastPlayer():
-                    self.stopGame()
-                    self.paintWinGameMessage(gameDisplay)
-                else:
-                    playerAux.kill(self)
+            if playerAux.getId() == playerPosition[0]:
+                playerAux.setPosition(playerPosition[1])
+                playerAux.paint(gameDisplay)
+                if playerAux.isColliding(self.getEnemies()):
+                    if self.isTheLastPlayer():
+                        self.stopGame()
+                        self.paintWinGameMessage(gameDisplay)
+                    else:
+                        playerAux.kill(self)
 
     def paintMessage(self, gameDisplay, mousePosition, message):
         font = pygame.font.SysFont(None, 30, True, False)
@@ -127,12 +130,12 @@ class DodgeGame:
 
     def paintWinGameMessage(self, gameDisplay):
         font = pygame.font.SysFont(None, 100, True, False)
-        text = font.render("YOU WIN!", True, ((0, 0, 0)))
+        text = font.render("YOU WIN!", True, ((254, 254, 254)))
         gameDisplay.blit(text, (config.DISPLAY_WIDTH / 2 - text.get_rect().width / 2, config.DISPLAY_HEIGHT / 2 - text.get_rect().height / 2))
 
     def paintPauseGameMessage(self, gameDisplay):
         font = pygame.font.SysFont(None, 100, True, False)
-        text = font.render("GAME IS PAUSED", True, ((0, 0, 0)))
+        text = font.render("GAME IS PAUSED", True, ((254, 254, 254)))
         gameDisplay.blit(text, (config.DISPLAY_WIDTH / 2 - text.get_rect().width / 2, config.DISPLAY_HEIGHT / 2 - text.get_rect().height / 2))
 
     def paintTime(self, gameDisplay):
