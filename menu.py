@@ -130,7 +130,7 @@ class Menu:
         self._updateScreen()
 
         if os.name != 'nt': print('press 1&2')
-        pygame_wiimote.init(2, 15) # look for 1, wait 5 seconds
+        pygame_wiimote.init(4, 10) # look for 1, wait 5 seconds
         n = pygame_wiimote.get_count() # how many did we get?
 
         if n == 0:

@@ -98,7 +98,6 @@ class DodgeGame:
                 else:
                     self.spawnEnemie(enemie.PurpleEnemie((0, 0)))
             self.paintEnemies(gameDisplay)
-            print(playerPosition)
             if playerPosition is not None:
                 self.paintPlayers(gameDisplay, playerPosition)
             self.paintTime(gameDisplay)
@@ -114,7 +113,7 @@ class DodgeGame:
     def paintPlayers(self, gameDisplay, playerPosition):
         for playerAux in self.getAlivePlayers():
             if playerAux.getId() == playerPosition[0]:
-                playerAux.setPosition(playerPosition[1])
+                playerAux.addNewLastPosition(playerPosition[1])
                 playerAux.paint(gameDisplay)
                 if playerAux.isColliding(self.getEnemies()):
                     if self.isTheLastPlayer():

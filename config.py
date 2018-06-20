@@ -38,7 +38,7 @@ WIIMOTE_MENU_BACKGROUND_IMAGE_3 = "imagens/wiimote_menu_3.png"
 WIIMOTE_MENU_BACKGROUND_IMAGE_4 = "imagens/wiimote_menu_4.png"
 
 #PLAYERS
-PLAYER_ONE_IMAGE = "imagens/enemy2.png"
+PLAYER_ONE_IMAGE = "imagens/sic-grande.png"
 
 #ENEMIES
 ENEMIE_BLUE_IMAGE_small = "imagens/blue.png"
