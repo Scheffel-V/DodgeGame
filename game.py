@@ -6,37 +6,17 @@ import os
 import sys
 sys.path.insert(0, './pywiiuse')
 import wiiuse.pygame_wiimote as pygame_wiimote
+import screen as SCREEN
 import player as PLAYER
 import game as GAME
 import dodgegame as DODGEGAME
 
-# Classe Game:
-# Classe utilizada assim que o jogo é aberto.
-# É a interface que permeia o jogo desde o menu,
-# durante a partida, até a hora que o jogador clica no exit.
-class Game:
+class Game(SCREEN.Screen):
     def __init__(self, pygame):
-        self._gameExit = False
+        super(Game, self).__init__(0, pygame)
         self._FPS = 0
-        self._gameDisplay = 0
         self._clock = 0
-        self._pygame = pygame
         self._playersList = []
-
-    def setGameExit(self):
-        self._gameExit = True
-
-    def getGameExit(self):
-        return self._gameExit
-
-    def setGameDisplay(self, gameDisplay):
-        self._gameDisplay = gameDisplay
-
-    def getGameDisplay(self):
-        return self._gameDisplay
-
-    def setClock(self, clock):
-        self._clock = clock
 
     def getClock(self):
         return self._clock
@@ -50,15 +30,6 @@ class Game:
     def isFPSOn(self):
         return self._FPS
 
-    def update(self):
-        self._pygame.display.update()
-
-    def quit(self):
-        self._pygame.quit()
-
-    def getMousePosition(self):
-        return self._pygame.mouse.get_pos()
-
     def paintAllStuff(self, gameDisplay, clock):
         if self.isFPSOn():
            self.paintFPS(gameDisplay, clock.get_fps())
@@ -68,14 +39,9 @@ class Game:
         text = font.render("FPS = %.2f" % fps, True, (0,0,0))
         gameDisplay.blit(text, (0, 0))
 
-    def _startNewGame(self, numberOfPlayers):
-        for i in range(0, numberOfPlayers):
-            player = PLAYER.Player(i+1, (100, 100), 64, 64, config.PLAYER_ONE_IMAGE)
-            self._playersList.append(player)
-
-        dodgeGame = DODGEGAME.DodgeGame(self._playersList)
-
-        while not self.getGameExit():
+    def _loopHandler(self):
+        dodgeGame = DODGEGAME.DodgeGame(self._playersList, self._pygame)
+        while not self.isGameExited():
             playerPosition = None
 
             for event in self._pygame.event.get():
@@ -103,20 +69,27 @@ class Game:
 
             if dodgeGame.isRunning():
                 if dodgeGame.isPaused():
-                    dodgeGame.paintPauseGameMessage(self.getGameDisplay())
+                    dodgeGame.paintPauseGameMessage(self._gameDisplay)
                     self.getClock().tick()
-                    self.update()
+                    self._displayUpdate()
                 else:
-                    dodgeGame.paintAllStuff(self.getGameDisplay(), playerPosition)
-                    self.paintAllStuff(self.getGameDisplay(), self.getClock())
+                    dodgeGame.paintAllStuff(self._gameDisplay, playerPosition)
+                    self.paintAllStuff(self._gameDisplay, self.getClock())
                     self.getClock().tick()
-                    self.update()
+                    self._displayUpdate()
                     self.getClock().tick(config.FPS)      # Determina o FPS máximo
         self.quit()
 
+    def _startNewGame(self, numberOfPlayers):
+        for i in range(0, numberOfPlayers):
+            player = PLAYER.Player(i+1, (100, 100), 64, 64, config.PLAYER_ONE_IMAGE)
+            self._playersList.append(player)
+
+        self._loopHandler()
+
     def start(self, numberOfPlayers):
-        self._gameDisplay = self._pygame.display.set_mode((config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT))
-        self._pygame.display.set_caption("Dodge Game")
+        self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
+        self._setTitle("DODGE GAME")
         self._clock = self._pygame.time.Clock()
         self._pygame.time.set_timer(self._pygame.USEREVENT + 1, 1000)  # 1 second is 1000 milliseconds
         self._startNewGame(numberOfPlayers)

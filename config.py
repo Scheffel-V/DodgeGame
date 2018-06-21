@@ -31,11 +31,8 @@ MAIN_MENU_FONT = "fonts/Colleged.ttf"
 MENU_WIDTH = 460
 MENU_HEIGHT = 620
 
-#WIIMOTE MENU
-WIIMOTE_MENU_BACKGROUND_IMAGE_1 = "imagens/wiimote_menu_1.png"
-WIIMOTE_MENU_BACKGROUND_IMAGE_2 = "imagens/wiimote_menu_2.png"
-WIIMOTE_MENU_BACKGROUND_IMAGE_3 = "imagens/wiimote_menu_3.png"
-WIIMOTE_MENU_BACKGROUND_IMAGE_4 = "imagens/wiimote_menu_4.png"
+#ENDGAME
+ENDGAME_BACKGROUND_IMAGE_0 = "imagens/end game menu_1.jpg"
 
 #PLAYERS
 PLAYER_ONE_IMAGE = "imagens/sic-grande.png"

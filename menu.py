@@ -3,6 +3,7 @@ import config
 import sys
 import random
 import os
+import screen as SCREEN
 import player as PLAYER
 import game as GAME
 import dodgegame as DODGEGAME
@@ -10,32 +11,28 @@ import enemie as ENEMIE
 sys.path.insert(0, './pywiiuse')
 import wiiuse.pygame_wiimote as pygame_wiimote
 
-class Menu:
-    def __init__(self):
-        self._gameDisplay = None
-        self._gameExit = False
-        self._optionPointer = [10, 100]
-        self._mainMenuImage0 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_0)
-        self._mainMenuImage1 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_1)
-        self._mainMenuImage2 = pygame.image.load(config.MENU_BACKGROUND_IMAGE_2)
-        self._selectedOption = 0
+class Menu(SCREEN.Screen):
+    def __init__(self, pygame):
+        super(Menu, self).__init__(3, pygame)
+        self._mainMenuImage0 = self._pygame.image.load(config.MENU_BACKGROUND_IMAGE_0)
+        self._mainMenuImage1 = self._pygame.image.load(config.MENU_BACKGROUND_IMAGE_1)
+        self._mainMenuImage2 = self._pygame.image.load(config.MENU_BACKGROUND_IMAGE_2)
+        self._mainImage = self._mainMenuImage0
         self._numberOfPlayers = 0
         self._enemiesOnTheScreen = []
         for i in range(0, 4):
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
 
-    def _displayBackImage(self):
+    def _changeBackImage(self):
         if self._selectedOption == 0:
-            mainMenuImage = self._mainMenuImage0
+            self._mainImage = self._mainMenuImage0
         elif self._selectedOption == 1:
-            mainMenuImage = self._mainMenuImage1
+            self._mainImage = self._mainMenuImage1
         elif self._selectedOption == 2:
-            mainMenuImage = self._mainMenuImage2
+            self._mainImage = self._mainMenuImage2
         else:
             print("You somehow selected an invalid option.")
-
-        self._gameDisplay.blit(mainMenuImage, (0, 0))
 
     def _displayEnemies(self):
         for enemieAux in self._enemiesOnTheScreen:
@@ -62,28 +59,11 @@ class Menu:
             self._enemiesOnTheScreen.remove(enemie)
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
-    def _movePointerDown(self):
-        self._optionPointer[1] += 50
-        if self._optionPointer[1] > 200:
-            self._optionPointer[1] = 100
-
-        self._selectedOption = (self._selectedOption + 1) % 3
-
-
-    def _movePointerUp(self):
-        self._optionPointer[1] -= 50
-        if self._optionPointer[1] < 100:
-            self._optionPointer[1] = 200
-
-        self._selectedOption -= 1
-        if self._selectedOption < 0:
-            self._selectedOption = 2
-
     def _startGame(self):
-        game = GAME.Game(pygame)
+        game = GAME.Game(self._pygame)
         game.start(self._numberOfPlayers)
 
-    def _handleMenuPress(self):
+    def _handleSelectedButtonPress(self):
         if self._selectedOption == 0:
             self._startGame()
 
@@ -97,40 +77,37 @@ class Menu:
             raise ("You somehow selected an invalid option !")
 
     def _handleKeyPress(self, event):
-        if event.key == pygame.K_DOWN:
-            self._movePointerDown()
+        if event.key == self._pygame.K_DOWN:
+            self._decSelectedOption()
 
-        if event.key == pygame.K_UP:
-            self._movePointerUp()
+        if event.key == self._pygame.K_UP:
+            self._incSelectedOption()
 
-        if event.key == pygame.K_SPACE:
-            self._handleMenuPress()
+        if event.key == self._pygame.K_SPACE:
+            self._handleSelectedButtonPress()
 
     def _handleWiimotePress(self, event):
         if event.button == 'Up':
-            self._movePointerUp()
+            self._decSelectedOption()
 
         elif event.button == 'Down':
-            self._movePointerDown()
+            self._incSelectedOption()
 
         elif event.button == 'A':
-            self._handleMenuPress()
+            self._handleSelectedButtonPress()
 
         else:
             pass
 
     def _updateScreen(self):
+        self._changeBackImage()
         self._displayBackImage()
         self._displayEnemies()
+        self._displayUpdate()
 
-    def start(self):
-        pygame.init()
-        self._gameDisplay = pygame.display.set_mode((config.MENU_WIDTH, config.MENU_HEIGHT))
-        pygame.display.set_caption("Main Menu")
-        self._updateScreen()
-
+    def _findWiimotes(self):
         if os.name != 'nt': print('press 1&2')
-        pygame_wiimote.init(4, 10) # look for 1, wait 5 seconds
+        pygame_wiimote.init(1, 10) # look for 1, wait 5 seconds
         n = pygame_wiimote.get_count() # how many did we get?
 
         if n == 0:
@@ -144,13 +121,9 @@ class Menu:
             wm.enable_accels(1)
             wm.enable_ir(1, vres=(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT))
 
-        old = [config.DISPLAY_HEIGHT/2] * 6
-        maxA = 2.0
-        flag = False
-        flagCounter = None
+    def _loopHandler(self):
         idsList = []
-
-        while not self._gameExit:
+        while not self.isGameExited():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._gameExit = True
@@ -163,6 +136,17 @@ class Menu:
                     if event.id not in idsList:
                         print('Wiimote ', event.id, ' is ok!')
                         idsList.append(event.id)
-                    #print(event.cursor[:2], event.id)
+                elif event.type == 29:
+                    if event.id not in idsList:
+                        print('Wiimote ', event.id, ' is ok!')
+                        idsList.append(event.id)
             self._updateScreen()
-            pygame.display.update()
+
+    def start(self):
+        self._pygame = pygame
+        self._pygame.init()
+        self._setDisplay(config.MENU_WIDTH, config.MENU_HEIGHT)
+        self._setTitle("MENU")
+        self._updateScreen()
+        self._findWiimotes()
+        self._loopHandler()

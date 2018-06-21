@@ -15,7 +15,7 @@ import random
 # a partida são realizadas.
 class DodgeGame:
 
-    def __init__(self, playerList):
+    def __init__(self, playerList, pygame):
         self._alivePlayersList = playerList
         self._enemiesList = []
         self._loseGame = False
@@ -28,6 +28,7 @@ class DodgeGame:
         self._gameIsPaused = False
         self._gameTime = 0
         self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, "imagens/black.jpg")
+        self._pygame = pygame
 
     def isRunning(self):
         return self._gameIsRunning
@@ -123,27 +124,27 @@ class DodgeGame:
                         playerAux.kill(self)
 
     def paintMessage(self, gameDisplay, mousePosition, message):
-        font = pygame.font.SysFont(None, 30, True, False)
+        font = self._pygame.font.SysFont(None, 30, True, False)
         text = font.render(message, True, ((0, 0, 255)))
         gameDisplay.blit(text, (mousePosition[0]-50, mousePosition[1]-20))
 
     def paintWinGameMessage(self, gameDisplay):
-        font = pygame.font.SysFont(None, 100, True, False)
+        font = self._pygame.font.SysFont(None, 100, True, False)
         text = font.render("YOU WIN!", True, ((254, 254, 254)))
         gameDisplay.blit(text, (config.DISPLAY_WIDTH / 2 - text.get_rect().width / 2, config.DISPLAY_HEIGHT / 2 - text.get_rect().height / 2))
 
     def paintPauseGameMessage(self, gameDisplay):
-        font = pygame.font.SysFont(None, 100, True, False)
+        font = self._pygame.font.SysFont(None, 100, True, False)
         text = font.render("GAME IS PAUSED", True, ((254, 254, 254)))
         gameDisplay.blit(text, (config.DISPLAY_WIDTH / 2 - text.get_rect().width / 2, config.DISPLAY_HEIGHT / 2 - text.get_rect().height / 2))
 
     def paintTime(self, gameDisplay):
-        font = pygame.font.SysFont(None, 50, True, False)
+        font = self._pygame.font.SysFont(None, 50, True, False)
         text = font.render("TIME:%d" % self._gameTime, True, ((140, 160, 50)))
         gameDisplay.blit(text, (0, 0))
 
     def paintName(self, gameDisplay):
-        font = pygame.font.SysFont(None, 30)
+        font = self._pygame.font.SysFont(None, 30)
         text = font.render("%s" % "MESTRE", True, (0, 0, 0))
         gameDisplay.blit(text, (495, 402))
 
@@ -156,7 +157,7 @@ class DodgeGame:
             self._endTimer -= 1
             self.paintLoseGameMessage(gameDisplay)
             if self._endTimer == 0:
-                pygame.quit()
+                self._pygame.quit()
                 menu = MENU.Menu()
                 menu.start()
 
