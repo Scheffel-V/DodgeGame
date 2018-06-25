@@ -7,7 +7,7 @@ import time
 import enemie
 import map
 import random
-
+import game
 
 
 # Classe DodgeGame:
@@ -15,7 +15,7 @@ import random
 # a partida são realizadas.
 class DodgeGame:
 
-    def __init__(self, playerList, pygame):
+    def __init__(self, playerList, pygame, game):
         self._alivePlayersList = playerList
         self._enemiesList = []
         self._loseGame = False
@@ -29,6 +29,7 @@ class DodgeGame:
         self._gameTime = 0
         self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, "imagens/black.jpg")
         self._pygame = pygame
+        self._game = game
 
     def isRunning(self):
         return self._gameIsRunning
@@ -120,6 +121,7 @@ class DodgeGame:
                     if self.isTheLastPlayer():
                         self.stopGame()
                         self.paintWinGameMessage(gameDisplay)
+                        self._loseGame = True
                     else:
                         playerAux.kill(self)
 
@@ -155,11 +157,8 @@ class DodgeGame:
             self._enemieTimer -= 1
         else:
             self._endTimer -= 1
-            self.paintLoseGameMessage(gameDisplay)
             if self._endTimer == 0:
-                self._pygame.quit()
-                menu = MENU.Menu()
-                menu.start()
+                self._game.setGameExited()
 
     def playerLose(self, gameDisplay):
         self._loseGame = True

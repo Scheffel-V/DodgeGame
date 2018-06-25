@@ -12,11 +12,12 @@ import game as GAME
 import dodgegame as DODGEGAME
 
 class Game(SCREEN.Screen):
-    def __init__(self, pygame):
+    def __init__(self, pygame, menu):
         super(Game, self).__init__(0, pygame)
         self._FPS = 0
         self._clock = 0
         self._playersList = []
+        self._menu = menu
 
     def getClock(self):
         return self._clock
@@ -30,6 +31,9 @@ class Game(SCREEN.Screen):
     def isFPSOn(self):
         return self._FPS
 
+    def setGameExited(self):
+        self._gameExit = True
+
     def paintAllStuff(self, gameDisplay, clock):
         if self.isFPSOn():
            self.paintFPS(gameDisplay, clock.get_fps())
@@ -40,7 +44,7 @@ class Game(SCREEN.Screen):
         gameDisplay.blit(text, (0, 0))
 
     def _loopHandler(self):
-        dodgeGame = DODGEGAME.DodgeGame(self._playersList, self._pygame)
+        dodgeGame = DODGEGAME.DodgeGame(self._playersList, self._pygame, self)
         while not self.isGameExited():
             playerPosition = None
 
@@ -78,7 +82,7 @@ class Game(SCREEN.Screen):
                     self.getClock().tick()
                     self._displayUpdate()
                     self.getClock().tick(config.FPS)      # Determina o FPS máximo
-        self.quit()
+        self._menu.restart()
 
     def _startNewGame(self, numberOfPlayers):
         for i in range(0, numberOfPlayers):

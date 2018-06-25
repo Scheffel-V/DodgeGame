@@ -141,7 +141,13 @@ class Menu(SCREEN.Screen):
                         print('Wiimote ', event.id, ' is ok!')
                         idsList.append(event.id)
             self._updateScreen()
+        self.quit()
 
+    def restart(self):
+        self._setDisplay(config.MENU_WIDTH, config.MENU_HEIGHT)
+        self._setTitle("MENU")
+        self._updateScreen()
+        
     def start(self):
         self._pygame = pygame
         self._pygame.init()
