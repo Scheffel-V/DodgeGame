@@ -32,7 +32,7 @@ MENU_WIDTH = 460
 MENU_HEIGHT = 620
 
 #ENDGAME
-ENDGAME_BACKGROUND_IMAGE_0 = "imagens/end game menu_1.jpg"
+ENDGAME_BACKGROUND_IMAGE_0 = "imagens/end game menu_1.png"
 
 #PLAYERS
 PLAYER_ONE_IMAGE = "imagens/sic-grande.png"

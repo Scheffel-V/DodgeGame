@@ -12,13 +12,14 @@ sys.path.insert(0, './pywiiuse')
 import wiiuse.pygame_wiimote as pygame_wiimote
 
 class EndGame(SCREEN.Screen):
-    def __init__(self, pygame):
+    def __init__(self, pygame, menu):
         super().__init__(0, pygame)
         self._gameDisplay = None
         self._pygame = pygame
+        self._menu = menu
         self._mainImage = pygame.image.load(config.ENDGAME_BACKGROUND_IMAGE_0)
 
-    def _updateScreen():
+    def _updateScreen(self):
         #self._changeBackImage()
         self._displayBackImage()
         self._displayUpdate()
@@ -30,7 +31,7 @@ class EndGame(SCREEN.Screen):
         pass
 
     def _backToMenu(self):
-        self.quit()
+        self._gameExit = True
 
     def _deleteLetter(self):
         pass
@@ -86,7 +87,7 @@ class EndGame(SCREEN.Screen):
         else:
             pass
 
-    def _loopHandler():
+    def _loopHandler(self):
         while not self.isGameExited():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -97,6 +98,7 @@ class EndGame(SCREEN.Screen):
                     print(event.button, 'pressed on', event.id)
                     self._handleWiimotePress(event)
             self._updateScreen()
+        self._menu.restart()
 
     def start(self):
         self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)

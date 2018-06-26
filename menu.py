@@ -60,7 +60,7 @@ class Menu(SCREEN.Screen):
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
     def _startGame(self):
-        game = GAME.Game(self._pygame)
+        game = GAME.Game(self._pygame, self)
         game.start(self._numberOfPlayers)
 
     def _handleSelectedButtonPress(self):
@@ -78,10 +78,10 @@ class Menu(SCREEN.Screen):
 
     def _handleKeyPress(self, event):
         if event.key == self._pygame.K_DOWN:
-            self._decSelectedOption()
+            self._incSelectedOption()
 
         if event.key == self._pygame.K_UP:
-            self._incSelectedOption()
+            self._decSelectedOption()
 
         if event.key == self._pygame.K_SPACE:
             self._handleSelectedButtonPress()
@@ -107,7 +107,7 @@ class Menu(SCREEN.Screen):
 
     def _findWiimotes(self):
         if os.name != 'nt': print('press 1&2')
-        pygame_wiimote.init(1, 10) # look for 1, wait 5 seconds
+        pygame_wiimote.init(4, 10) # look for 1, wait 5 seconds
         n = pygame_wiimote.get_count() # how many did we get?
 
         if n == 0:
@@ -147,7 +147,7 @@ class Menu(SCREEN.Screen):
         self._setDisplay(config.MENU_WIDTH, config.MENU_HEIGHT)
         self._setTitle("MENU")
         self._updateScreen()
-        
+
     def start(self):
         self._pygame = pygame
         self._pygame.init()

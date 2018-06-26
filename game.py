@@ -9,6 +9,7 @@ import wiiuse.pygame_wiimote as pygame_wiimote
 import screen as SCREEN
 import player as PLAYER
 import game as GAME
+import endgame as ENDGAME
 import dodgegame as DODGEGAME
 
 class Game(SCREEN.Screen):
@@ -40,8 +41,8 @@ class Game(SCREEN.Screen):
 
     def paintFPS(self, gameDisplay, fps):
         font = self._pygame.font.SysFont(None, 25)
-        text = font.render("FPS = %.2f" % fps, True, (0,0,0))
-        gameDisplay.blit(text, (0, 0))
+        text = font.render("FPS = %.2f" % fps, True, (140, 160, 50))
+        gameDisplay.blit(text, (0, 30))
 
     def _loopHandler(self):
         dodgeGame = DODGEGAME.DodgeGame(self._playersList, self._pygame, self)
@@ -50,7 +51,7 @@ class Game(SCREEN.Screen):
 
             for event in self._pygame.event.get():
                 if event.type == self._pygame.QUIT:
-                    self.setGameExit()
+                    self.setGameExited()
                 elif event.type == self._pygame.KEYDOWN:
                     if event.key == self._pygame.K_f:
                         if self.isFPSOn():
@@ -82,7 +83,8 @@ class Game(SCREEN.Screen):
                     self.getClock().tick()
                     self._displayUpdate()
                     self.getClock().tick(config.FPS)      # Determina o FPS máximo
-        self._menu.restart()
+        endGame = ENDGAME.EndGame(self._pygame, self._menu)
+        endGame.start()
 
     def _startNewGame(self, numberOfPlayers):
         for i in range(0, numberOfPlayers):

@@ -112,6 +112,7 @@ class DodgeGame:
             enemiesAux.move(self)
             enemiesAux.paint(gameDisplay)
 
+#fazer uma hashtable
     def paintPlayers(self, gameDisplay, playerPosition):
         for playerAux in self.getAlivePlayers():
             if playerAux.getId() == playerPosition[0]:
