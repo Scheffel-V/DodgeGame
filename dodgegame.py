@@ -31,6 +31,9 @@ class DodgeGame:
         self._pygame = pygame
         self._game = game
 
+    def getGameTime(self):
+        return self._gameTime
+
     def isRunning(self):
         return self._gameIsRunning
 
@@ -123,6 +126,7 @@ class DodgeGame:
                         self.stopGame()
                         self.paintWinGameMessage(gameDisplay)
                         self._loseGame = True
+                        self.pauseGame()
                     else:
                         playerAux.kill(self)
 

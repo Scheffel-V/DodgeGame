@@ -12,16 +12,18 @@ sys.path.insert(0, './pywiiuse')
 import wiiuse.pygame_wiimote as pygame_wiimote
 
 class EndGame(SCREEN.Screen):
-    def __init__(self, pygame, menu):
+    def __init__(self, pygame, menu, time):
         super().__init__(0, pygame)
         self._gameDisplay = None
         self._pygame = pygame
         self._menu = menu
+        self._gameTime = time
         self._mainImage = pygame.image.load(config.ENDGAME_BACKGROUND_IMAGE_0)
 
     def _updateScreen(self):
         #self._changeBackImage()
         self._displayBackImage()
+        self.paintTime(self._gameDisplay)
         self._displayUpdate()
 
     def _saveRecord(self):
@@ -86,6 +88,11 @@ class EndGame(SCREEN.Screen):
 
         else:
             pass
+
+    def paintTime(self, gameDisplay):
+        font = self._pygame.font.SysFont(None, 50, True, False)
+        text = font.render("TIME:%d" % self._gameTime, True, ((140, 160, 50)))
+        gameDisplay.blit(text, (0, 0))
 
     def _loopHandler(self):
         while not self.isGameExited():

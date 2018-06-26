@@ -83,7 +83,7 @@ class Game(SCREEN.Screen):
                     self.getClock().tick()
                     self._displayUpdate()
                     self.getClock().tick(config.FPS)      # Determina o FPS máximo
-        endGame = ENDGAME.EndGame(self._pygame, self._menu)
+        endGame = ENDGAME.EndGame(self._pygame, self._menu, dodgeGame.getGameTime())
         endGame.start()
 
     def _startNewGame(self, numberOfPlayers):
