@@ -27,9 +27,6 @@ class Screen:
         if self._selectedOption < 0:
             self._selectedOption = self._selectedOptionsNumber - 1
 
-    def _displayBackImage(self):
-        self._gameDisplay.blit(self._mainImage, (0, 0))
-
     def _setTitle(self, title):
         self._pygame.display.set_caption(title)
 
@@ -41,6 +38,10 @@ class Screen:
 
     def quit(self):
         self._pygame.quit()
+
+    @abc.abstractmethod
+    def _displayBackImage(self):
+        pass
 
     @abc.abstractmethod
     def _changeBackImage(self):

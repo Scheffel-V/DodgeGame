@@ -27,7 +27,7 @@ class DodgeGame:
         self._gameIsRunning = True
         self._gameIsPaused = False
         self._gameTime = 0
-        self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, "imagens/black.jpg")
+        self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, config.MAP_BACKGROUND)
         self._pygame = game._pygame
         self._game = game
 

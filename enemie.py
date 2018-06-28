@@ -264,22 +264,22 @@ class ScreenEnemie(Enemie):
         randomPosition = None
         if self._side == 1:
             if self._direction == 1:
-                randomPosition = random.randint(0, config.MENU_WIDTH-1), 1
+                randomPosition = random.randint(0, config.DISPLAY_WIDTH-1), 1
             else:
-                randomPosition = random.randint(0, config.MENU_WIDTH-1), config.MENU_HEIGHT-1
+                randomPosition = random.randint(0, config.DISPLAY_WIDTH-1), config.DISPLAY_HEIGHT-1
         else:
             if self._direction == 1:
-                randomPosition = 1, random.randint(0, config.MENU_HEIGHT)
+                randomPosition = 1, random.randint(0, config.DISPLAY_HEIGHT)
             else:
-                randomPosition = config.MENU_WIDTH, random.randint(0, config.MENU_HEIGHT)
+                randomPosition = config.DISPLAY_WIDTH, random.randint(0, config.DISPLAY_HEIGHT)
 
         self.setPosition(randomPosition)
 
     def isOut(self):
         position = self.getPosition()
-        if 0 >= position[0] or position[0] >= config.MENU_WIDTH:
+        if 0 >= position[0] or position[0] >= config.DISPLAY_WIDTH:
              return True
-        elif 0 >= position[1] or position[1] >= config.MENU_HEIGHT:
+        elif 0 >= position[1] or position[1] >= config.DISPLAY_HEIGHT:
             return True
         else:
             return False

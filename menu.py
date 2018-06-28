@@ -17,10 +17,11 @@ class Menu(SCREEN.Screen):
         self._mainMenuImage0 = self._pygame.image.load(config.MENU_BACKGROUND_IMAGE_0)
         self._mainMenuImage1 = self._pygame.image.load(config.MENU_BACKGROUND_IMAGE_1)
         self._mainMenuImage2 = self._pygame.image.load(config.MENU_BACKGROUND_IMAGE_2)
+        self._backgroundImage = self._pygame.image.load(config.MAP_BACKGROUND)
         self._mainImage = self._mainMenuImage0
         self._numberOfPlayers = 0
         self._enemiesOnTheScreen = []
-        for i in range(0, 4):
+        for i in range(0, 8):
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
 
@@ -99,6 +100,11 @@ class Menu(SCREEN.Screen):
         else:
             pass
 
+    def _displayBackImage(self):
+        self._gameDisplay.blit(self._backgroundImage, (0, 0))
+        self._gameDisplay.blit(self._mainImage, ((config.DISPLAY_WIDTH / 2) - (config.MENU_WIDTH / 2),
+                                                 (config.DISPLAY_HEIGHT / 2) - (config.MENU_HEIGHT / 2)))
+
     def _updateScreen(self):
         self._changeBackImage()
         self._displayBackImage()
@@ -144,14 +150,14 @@ class Menu(SCREEN.Screen):
         self.quit()
 
     def restart(self):
-        self._setDisplay(config.MENU_WIDTH, config.MENU_HEIGHT)
+        self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self._setTitle("MENU")
         self._updateScreen()
 
     def start(self):
         self._pygame = pygame
         self._pygame.init()
-        self._setDisplay(config.MENU_WIDTH, config.MENU_HEIGHT)
+        self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self._setTitle("MENU")
         self._updateScreen()
         self._findWiimotes()

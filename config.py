@@ -13,9 +13,12 @@ COLLIDE_COLOR = (255, 150, 0)
 NOT_COLLIDE_COLOR = (0, 255, 0)
 MOUSE_CIRCLE_SURFACE = (480, 480)
 FPS = 100
-DISPLAY_WIDTH = 1700
-DISPLAY_HEIGHT = 800
+DISPLAY_WIDTH = 1280
+DISPLAY_HEIGHT = 720
 DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
+
+#Map
+MAP_BACKGROUND = "imagens/black.jpg"
 
 #MOUSE
 LEFT_BUTTON = 1
@@ -32,7 +35,19 @@ MENU_WIDTH = 460
 MENU_HEIGHT = 620
 
 #ENDGAME
-ENDGAME_BACKGROUND_IMAGE_0 = "imagens/end game menu_1.png"
+ENDGAME_BACKGROUND_IMAGE_0 = "imagens/end game menu.png"
+ENDGAME_BACKGROUND_IMAGE_1 = "imagens/end game menu_1_2.png"
+ENDGAME_BACKGROUND_IMAGE_2 = "imagens/end game menu_2_2.png"
+ENDGAME_BACKGROUND_IMAGE_3 = "imagens/end game menu_3_2.png"
+ENDGAME_BACKGROUND_IMAGE_4 = "imagens/end game menu_4_2.png"
+ENDGAME_BACKGROUND_IMAGE_5 = "imagens/end game menu_5_2.png"
+ENDGAME_BACKGROUND_IMAGE_6 = "imagens/end game menu_6_2.png"
+ENDGAME_BACKGROUND_IMAGE_7 = "imagens/end game menu_7_2.png"
+ENDGAME_BACKGROUND_IMAGE_8 = "imagens/end game menu_8_2.png"
+ENDGAME_BACKGROUND_IMAGE_9 = "imagens/end game menu_9_2.png"
+ENDGAME_BACKGROUND_IMAGE_10 = "imagens/end game menu_10_2.png"
+ENDGAME_WIDTH = 725
+ENDGAME_HEIGHT = 725
 
 #PLAYERS
 PLAYER_ONE_IMAGE = "imagens/sic-grande.png"
