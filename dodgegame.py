@@ -15,12 +15,12 @@ import game
 # a partida são realizadas.
 class DodgeGame:
 
-    def __init__(self, playerList, pygame, game):
-        self._alivePlayersList = playerList
+    def __init__(self, game):
+        self._alivePlayersList = game.getPlayerList()
         self._enemiesList = []
         self._loseGame = False
         self._FPS = False
-        self._playersList = playerList
+        self._playersList = game.getPlayerList()
         self._timer = 0
         self._endTimer = 5
         self._enemieTimer = 5
@@ -28,7 +28,7 @@ class DodgeGame:
         self._gameIsPaused = False
         self._gameTime = 0
         self._map = map.Map(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT, "imagens/black.jpg")
-        self._pygame = pygame
+        self._pygame = game._pygame
         self._game = game
 
     def getGameTime(self):
@@ -92,7 +92,7 @@ class DodgeGame:
         else:
             return enemie.GreenEnemie(randomPosition)
 
-    def paintAllStuff(self, gameDisplay, playerPosition):
+    def paintAllStuff(self, gameDisplay, playerPositionList):
         if not self._loseGame:
             self.paintMap(gameDisplay)
             if self._enemieTimer <= 0:
@@ -103,8 +103,7 @@ class DodgeGame:
                 else:
                     self.spawnEnemie(enemie.PurpleEnemie((0, 0)))
             self.paintEnemies(gameDisplay)
-            if playerPosition is not None:
-                self.paintPlayers(gameDisplay, playerPosition)
+            self.paintPlayers(gameDisplay, playerPositionList)
             self.paintTime(gameDisplay)
 
     def paintMap(self, gameDisplay):
@@ -115,20 +114,20 @@ class DodgeGame:
             enemiesAux.move(self)
             enemiesAux.paint(gameDisplay)
 
-#fazer uma hashtable
-    def paintPlayers(self, gameDisplay, playerPosition):
+    def paintPlayers(self, gameDisplay, playerPositionList):
+        print(len(playerPositionList))
         for playerAux in self.getAlivePlayers():
-            if playerAux.getId() == playerPosition[0]:
-                playerAux.addNewLastPosition(playerPosition[1])
-                playerAux.paint(gameDisplay)
-                if playerAux.isColliding(self.getEnemies()):
-                    if self.isTheLastPlayer():
-                        self.stopGame()
-                        self.paintWinGameMessage(gameDisplay)
-                        self._loseGame = True
-                        self.pauseGame()
-                    else:
-                        playerAux.kill(self)
+            for playerPositionAux in playerPositionList:
+                if playerAux.getId() == playerPositionAux[0]:
+                    playerAux.addNewLastPosition(playerPositionAux[1])
+                    playerAux.paint(gameDisplay)
+                    if playerAux.isColliding(self.getEnemies()):
+                        if self.isTheLastPlayer():
+                            self.stopGame()
+                            self.paintWinGameMessage(gameDisplay)
+                            self._loseGame = True
+                        else:
+                            playerAux.kill(self)
 
     def paintMessage(self, gameDisplay, mousePosition, message):
         font = self._pygame.font.SysFont(None, 30, True, False)
@@ -156,7 +155,8 @@ class DodgeGame:
         gameDisplay.blit(text, (495, 402))
 
     def decTimer(self):
-        self._gameTime += 1
+        if self.isRunning():
+            self._gameTime += 1
         if not self._loseGame:
             self._timer -= 1
             self._enemieTimer -= 1

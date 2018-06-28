@@ -20,6 +20,9 @@ class Game(SCREEN.Screen):
         self._playersList = []
         self._menu = menu
 
+    def getPlayerList(self):
+        return self._playersList
+
     def getClock(self):
         return self._clock
 
@@ -45,7 +48,8 @@ class Game(SCREEN.Screen):
         gameDisplay.blit(text, (0, 30))
 
     def _loopHandler(self):
-        dodgeGame = DODGEGAME.DodgeGame(self._playersList, self._pygame, self)
+        dodgeGame = DODGEGAME.DodgeGame(self)
+        playerPositionList = []
         while not self.isGameExited():
             playerPosition = None
 
@@ -69,6 +73,7 @@ class Game(SCREEN.Screen):
                 elif event.type == pygame_wiimote.WIIMOTE_IR:
                     mousePosition = event.cursor[:2]
                     playerPosition = (event.id, mousePosition)
+                    playerPositionList.append(playerPosition)
                 elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
                     print(event.button, 'pressed on', event.id)
 
@@ -78,7 +83,8 @@ class Game(SCREEN.Screen):
                     self.getClock().tick()
                     self._displayUpdate()
                 else:
-                    dodgeGame.paintAllStuff(self._gameDisplay, playerPosition)
+                    dodgeGame.paintAllStuff(self._gameDisplay, playerPositionList)
+                    playerPositionList = []
                     self.paintAllStuff(self._gameDisplay, self.getClock())
                     self.getClock().tick()
                     self._displayUpdate()

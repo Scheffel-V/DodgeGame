@@ -15,7 +15,6 @@ class EndGame(SCREEN.Screen):
     def __init__(self, pygame, menu, time):
         super().__init__(0, pygame)
         self._gameDisplay = None
-        self._pygame = pygame
         self._menu = menu
         self._gameTime = time
         self._mainImage = pygame.image.load(config.ENDGAME_BACKGROUND_IMAGE_0)
