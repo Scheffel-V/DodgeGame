@@ -94,7 +94,7 @@ class Game(SCREEN.Screen):
 
     def _startNewGame(self, numberOfPlayers):
         for i in range(0, numberOfPlayers):
-            player = PLAYER.Player(i+1, (100, 100), 64, 64, config.PLAYER_ONE_IMAGE)
+            player = PLAYER.Player(i+1, (100, 100), 64, 64, i)
             self._playersList.append(player)
 
         self._loopHandler()

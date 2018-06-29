@@ -36,59 +36,61 @@ MENU_HEIGHT = 620
 
 #ENDGAME
 ENDGAME_BACKGROUND_IMAGE_0 = "imagens/end game menu.png"
-ENDGAME_BACKGROUND_IMAGE_1 = "imagens/end game menu_1_2.png"
-ENDGAME_BACKGROUND_IMAGE_2 = "imagens/end game menu_2_2.png"
-ENDGAME_BACKGROUND_IMAGE_3 = "imagens/end game menu_3_2.png"
-ENDGAME_BACKGROUND_IMAGE_4 = "imagens/end game menu_4_2.png"
-ENDGAME_BACKGROUND_IMAGE_5 = "imagens/end game menu_5_2.png"
-ENDGAME_BACKGROUND_IMAGE_6 = "imagens/end game menu_6_2.png"
-ENDGAME_BACKGROUND_IMAGE_7 = "imagens/end game menu_7_2.png"
-ENDGAME_BACKGROUND_IMAGE_8 = "imagens/end game menu_8_2.png"
-ENDGAME_BACKGROUND_IMAGE_9 = "imagens/end game menu_9_2.png"
-ENDGAME_BACKGROUND_IMAGE_10 = "imagens/end game menu_10_2.png"
+ENDGAME_BACKGROUND_IMAGE_1 = "imagens/end game menu_1.png"
+ENDGAME_BACKGROUND_IMAGE_2 = "imagens/end game menu_2.png"
+ENDGAME_BACKGROUND_IMAGE_3 = "imagens/end game menu_3.png"
+ENDGAME_BACKGROUND_IMAGE_4 = "imagens/end game menu_4.png"
+ENDGAME_BACKGROUND_IMAGE_5 = "imagens/end game menu_5.png"
+ENDGAME_BACKGROUND_IMAGE_6 = "imagens/end game menu_6.png"
+ENDGAME_BACKGROUND_IMAGE_7 = "imagens/end game menu_7.png"
+ENDGAME_BACKGROUND_IMAGE_8 = "imagens/end game menu_8.png"
+ENDGAME_BACKGROUND_IMAGE_9 = "imagens/end game menu_9.png"
+ENDGAME_BACKGROUND_IMAGE_10 = "imagens/end game menu_10.png"
 ENDGAME_WIDTH = 725
 ENDGAME_HEIGHT = 725
 
 #PLAYERS
-PLAYER_ONE_IMAGE = "imagens/sic-grande.png"
+PLAYER_ONE_IMAGE = "imagens/player-red.png"
+PLAYER_TWO_IMAGE = "imagens/player-blue.png"
+PLAYER_THREE_IMAGE = "imagens/player-green.png"
+PLAYER_FOUR_IMAGE = "imagens/player-yellow.png"
+PLAYER_IMAGE = []
+PLAYER_IMAGE.append(PLAYER_ONE_IMAGE)
+PLAYER_IMAGE.append(PLAYER_TWO_IMAGE)
+PLAYER_IMAGE.append(PLAYER_THREE_IMAGE)
+PLAYER_IMAGE.append(PLAYER_FOUR_IMAGE)
 
 #ENEMIES
 ENEMIE_BLUE_IMAGE_small = "imagens/blue.png"
-ENEMIE_BLUE_IMAGE_big = "imagens/lue-grande.png"
 ENEMIE_BLUE_WIDTH = 32
 ENEMIE_BLUE_HEIGHT = 32
 ENEMIE_BLUE_SPEED = 0.4
 
 ENEMIE_RED_IMAGE_small = "imagens/red.png"
-ENEMIE_RED_IMAGE_big = "imagens/sic-grande.png"
 ENEMIE_RED_WIDTH = 32
 ENEMIE_RED_HEIGHT = 32
 ENEMIE_RED_SPEED = 1.2
 
 ENEMIE_GREEN_IMAGE_small = "imagens/green.png"
-ENEMIE_GREEN_IMAGE_big = "imagens/poisontower_big.png"
 ENEMIE_GREEN_WIDTH = 32
 ENEMIE_GREEN_HEIGHT = 32
 ENEMIE_GREEN_SPEED = 0.6
 
 ENEMIE_YELLOW_IMAGE_small = "imagens/yellow.png"
-ENEMIE_YELLOW_IMAGE_big = "imagens/thundertower_big.png"
 ENEMIE_YELLOW_WIDTH = 32
 ENEMIE_YELLOW_HEIGHT = 32
 ENEMIE_YELLOW_SPEED = 0.8
 
-ENEMIE_PURPLE_IMAGE_small = "imagens/purple2.png"
-ENEMIE_PURPLE_IMAGE_big = "imagens/thundertower_big.png"
+ENEMIE_PURPLE_IMAGE_small = "imagens/purple.png"
 ENEMIE_PURPLE_WIDTH = 32
 ENEMIE_PURPLE_HEIGHT = 32
 ENEMIE_PURPLE_SPEED = 1.0
 
-ENEMIE_WHITE_IMAGE_small = "imagens/white2.png"
-ENEMIE_WHITE_IMAGE_big = "imagens/thundertower_big.png"
+ENEMIE_WHITE_IMAGE_small = "imagens/white.png"
 ENEMIE_WHITE_WIDTH = 32
 ENEMIE_WHITE_HEIGHT = 32
 ENEMIE_WHITE_SPEED = 1.0
 
 ENEMIE_SCREEN_WIDTH = 32
 ENEMIE_SCREEN_HEIGHT = 32
-ENEMIE_SCREEN_SPEED = 0.5
+ENEMIE_SCREEN_SPEED = 0.75

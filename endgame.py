@@ -75,7 +75,7 @@ class EndGame(SCREEN.Screen):
         recordsFile = open("records.txt", "r+")
         records = []
         for i in range(1, 11):
-            records.append(int(recordsFile.readline(i)))
+            records.append(int((recordsFile.readline()).replace('\n', '')))
         recordsFile.close()
 
         for i in range(0, 10):
@@ -89,8 +89,9 @@ class EndGame(SCREEN.Screen):
 
         recordsFile = open("records.txt", "w")
         print(records)
-        for i in range(0, 10):
-            recordsFile.write(str(records[i]))
+        for i in range(0, 9):
+            recordsFile.write((str(records[i])).__add__("\n"))
+        recordsFile.write((str(records[9])))
         recordsFile.close()
 
     def _showRecords(self):

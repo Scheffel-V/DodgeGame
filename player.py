@@ -3,7 +3,8 @@ import rectangle
 import pygame
 
 class Player(rectangle.Rectangle):
-    def __init__(self, id, position, width, height, image):
+    def __init__(self, id, position, width, height, imageOption):
+        image = config.PLAYER_IMAGE[imageOption]
         super(Player, self).__init__(position, width, height, image)
         self._isAlive = True
         self._id = id
