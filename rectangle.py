@@ -53,7 +53,7 @@ class Rectangle(object):
         self._width = width
         self.calcCenter()
 
-    def getheight(self):
+    def getHeight(self):
         return self._height
 
     def setheight(self, height):
@@ -61,7 +61,7 @@ class Rectangle(object):
         self.calcCenter()
 
     def getDims(self):
-        return self.getWidth(), self.getheight()
+        return self.getWidth(), self.getHeight()
 
     def paint(self, surface):
         surface.blit(self._image, self._position)

@@ -8,8 +8,8 @@ import game as GAME
 import dodgegame as DODGEGAME
 import enemie as ENEMIE
 import screen as SCREEN
-#sys.path.insert(0, './pywiiuse')
-#import wiiuse.pygame_wiimote as pygame_wiimote
+sys.path.insert(0, './pywiiuse')
+import wiiuse.pygame_wiimote as pygame_wiimote
 
 class Records(SCREEN.Screen):
     def __init__(self, pygame, menu, recordPosition):
@@ -89,9 +89,9 @@ class Records(SCREEN.Screen):
                     self._gameExit = True
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
-                #elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                #    print(event.button, 'pressed on', event.id)
-                #    self._handleWiimotePress(event)
+                elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
+                    print(event.button, 'pressed on', event.id)
+                    self._handleWiimotePress(event)
             self._updateScreen()
         self._menu.restart()
 

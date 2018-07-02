@@ -9,8 +9,8 @@ import game as GAME
 import dodgegame as DODGEGAME
 import enemie as ENEMIE
 import records as RECORDS
-#sys.path.insert(0, './pywiiuse')
-#import wiiuse.pygame_wiimote as pygame_wiimote
+sys.path.insert(0, './pywiiuse')
+import wiiuse.pygame_wiimote as pygame_wiimote
 
 class Menu(SCREEN.Screen):
     def __init__(self, pygame):
@@ -68,8 +68,7 @@ class Menu(SCREEN.Screen):
     def _startGame(self):
         self._sound.stop()
         game = GAME.Game(self._pygame, self)
-        #game.start(self._numberOfPlayers)
-        game.start(1)
+        game.start(self._numberOfPlayers)
 
     def _showRecords(self):
         self._sound.stop()
@@ -154,13 +153,13 @@ class Menu(SCREEN.Screen):
                     self._gameExit = True
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
-                #elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                #    print(event.button, 'pressed on', event.id)
-                #    self._handleWiimotePress(event)
-                #elif event.type == pygame_wiimote.WIIMOTE_IR:
-                #    if event.id not in idsList:
-                #        print('Wiimote ', event.id, ' is ok!')
-                #        idsList.append(event.id)
+                elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
+                    print(event.button, 'pressed on', event.id)
+                    self._handleWiimotePress(event)
+                elif event.type == pygame_wiimote.WIIMOTE_IR:
+                    if event.id not in idsList:
+                        print('Wiimote ', event.id, ' is ok!')
+                        idsList.append(event.id)
                 elif event.type == 29:
                     if event.id not in idsList:
                         print('Wiimote ', event.id, ' is ok!')
@@ -184,5 +183,5 @@ class Menu(SCREEN.Screen):
         self._setTitle("MENU")
         self._updateScreen()
         self._playSong()
-        #self._findWiimotes()
+        self._findWiimotes()
         self._loopHandler()

@@ -4,8 +4,8 @@ import config
 import random
 import os
 import sys
-#sys.path.insert(0, './pywiiuse')
-#import wiiuse.pygame_wiimote as pygame_wiimote
+sys.path.insert(0, './pywiiuse')
+import wiiuse.pygame_wiimote as pygame_wiimote
 import screen as SCREEN
 import player as PLAYER
 import game as GAME
@@ -73,12 +73,15 @@ class Game(SCREEN.Screen):
                         dodgeGame.singlePlayerExplodeBomb()
                 elif event.type == self._pygame.USEREVENT + 1 and not dodgeGame.isPaused():
                     dodgeGame.decTimer()
-                #elif event.type == pygame_wiimote.WIIMOTE_IR:
-                #    mousePosition = event.cursor[:2]
-                #    playerPosition = (event.id, mousePosition)
-                #    playerPositionList.append(playerPosition)
-                #elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                #    print(event.button, 'pressed on', event.id)
+                elif event.type == pygame_wiimote.WIIMOTE_IR:
+                    mousePosition = event.cursor[:2]
+                    playerPosition = (event.id, mousePosition)
+                    playerPositionList.append(playerPosition)
+                elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
+                    print(event.button, 'pressed on', event.id)
+                    if event.button == 'A':
+                        dodgeGame.multiPlayerExplodeBomb(event.id)
+
 
             if dodgeGame.isRunning():
                 if dodgeGame.isPaused():
@@ -86,10 +89,10 @@ class Game(SCREEN.Screen):
                     self.getClock().tick()
                     self._displayUpdate()
                 else:
-                    mousePosition = pygame.mouse.get_pos()
-                    playerPosition = (1, mousePosition)
-                    playerPositionList = []
-                    playerPositionList.append(playerPosition)
+                    #mousePosition = pygame.mouse.get_pos()
+                    #playerPosition = (1, mousePosition)
+                    #playerPositionList = []
+                    #playerPositionList.append(playerPosition)
                     dodgeGame.paintAllStuff(self._gameDisplay, playerPositionList)
                     playerPositionList = []
                     self.paintAllStuff(self._gameDisplay, self.getClock())
@@ -104,6 +107,8 @@ class Game(SCREEN.Screen):
         for i in range(0, numberOfPlayers):
             player = PLAYER.Player(i+1, (100, 100), 64, 64, i)
             self._playersList.append(player)
+
+        print(self._playersList)
 
         self._loopHandler()
 

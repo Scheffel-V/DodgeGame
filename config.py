@@ -11,11 +11,11 @@ GREEN = (0, 255, 0)
 CK = (255, 0, 0)
 COLLIDE_COLOR = (255, 150, 0)
 NOT_COLLIDE_COLOR = (0, 255, 0)
-MOUSE_CIRCLE_SURFACE = (480, 480)
 FPS = 100
-DISPLAY_WIDTH = 1280
-DISPLAY_HEIGHT = 720
+DISPLAY_WIDTH = 1920
+DISPLAY_HEIGHT = 1080
 DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
+MOUSE_CIRCLE_SURFACE = (480, 480)
 
 #BOMB
 BOMB_IMAGE = "imagens/firetrap2.png"
@@ -28,6 +28,7 @@ WIN_SOUND = "sounds/win_sound.wav"
 EXPLOSION_SOUND = "sounds/explosion_sound.wav"
 GAME_SONG = "sounds/game_song.wav"
 MENU_SONG = "sounds/menu_song.wav"
+DESPACITO = "sounds/despacito.wav"
 
 #Map
 MAP_BACKGROUND = "imagens/black.jpg"

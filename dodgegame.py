@@ -26,7 +26,8 @@ class DodgeGame:
         self._endTimer = 4
         self._enemieTimer = 5
         self._difficultyTimer = 10
-        self._bombTimer = 4
+        self._speedIncrease = 0.0
+        self._bombTimer = 5
         self._gameIsRunning = True
         self._gameIsPaused = False
         self._gameTime = 0
@@ -43,13 +44,15 @@ class DodgeGame:
         self._sounds.append(self._pygame.mixer.Sound(config.WIN_SOUND))
         self._sounds.append(self._pygame.mixer.Sound(config.DEATH_SOUND))
         self._sounds.append(self._pygame.mixer.Sound(config.EXPLOSION_SOUND))
+        self._sounds.append(self._pygame.mixer.Sound(config.DESPACITO))
         self._sounds[0].set_volume(0.1)
         self._sounds[1].set_volume(0.5)
         self._sounds[2].set_volume(0.5)
         self._sounds[3].set_volume(0.5)
+        self._sounds[4].set_volume(0.5)
 
     def _increaseDifficulty(self):
-        pass
+        self._speedIncrease += 0.1
 
     def getGameTime(self):
         return self._gameTime
@@ -100,31 +103,32 @@ class DodgeGame:
         return self._enemiesList
 
     def getEnemieToSpawn(self):
-        randomNumber = random.randint(1, 5)
+        randomNumber = random.randint(1, 4)
         randomPosition = random.randint(0, config.DISPLAY_WIDTH-1) , random.randint(0, config.DISPLAY_HEIGHT-1)
 
         if randomNumber == 1:
-            return enemie.BlueEnemie(randomPosition)
+            return enemie.BlueEnemie(randomPosition, self._speedIncrease)
         elif randomNumber == 2:
-            return enemie.YellowEnemie(randomPosition)
+            return enemie.YellowEnemie(randomPosition, self._speedIncrease)
         elif randomNumber == 3:
-            return enemie.RedEnemie(randomPosition)
+            return enemie.RedEnemie(randomPosition, self._speedIncrease)
         else:
-            return enemie.GreenEnemie(randomPosition)
+            return enemie.GreenEnemie(randomPosition, self._speedIncrease)
 
     def addBomb(self, newBomb):
         self._bombsList.append(newBomb)
 
     def _spawnBomb(self):
         randomNumber = random.randint(1, 3)
-        if True:
+        if randomNumber == 1:
             randomPosition = random.randint(0, config.DISPLAY_WIDTH - 1), random.randint(0, config.DISPLAY_HEIGHT - 1)
-            bomb = BOMB.Bomb(randomPosition)
+            bomb = BOMB.Bomb(randomPosition, self._pygame)
             self.addBomb(bomb)
-        self._bombTimer = 4
+        self._bombTimer = 5
 
     def explodeBomb(self, bomb):
         self._explodedBombsList.append(bomb)
+        self._playExplosionSound()
 
     def killBomb(self, bomb):
         self._explodedBombsList.remove(bomb)
@@ -133,14 +137,21 @@ class DodgeGame:
         self._bombsList.remove(bomb)
 
     def singlePlayerExplodeBomb(self):
+        print(self._playersList)
         self._playersList[0].explodeBomb(self)
 
+    def multiPlayerExplodeBomb(self, id):
+        for playerAux in self._playersList:
+            if playerAux.getId() == id:
+                if playerAux.haveBomb():
+                    playerAux.explodeBomb(self)
+
     def playGameSong(self):
-        self._sounds[0].play(-1)
-        self._sounds[0].set_volume(0.3)
+        self._sounds[4].play(-1)
+        self._sounds[4].set_volume(0.3)
 
     def stopGameSong(self):
-        self._sounds[0].stop()
+        self._sounds[4].stop()
 
     def _playWinSound(self):
         self._sounds[1].play()
@@ -158,9 +169,9 @@ class DodgeGame:
                 self.spawnEnemie(self.getEnemieToSpawn())
                 randomNumber = random.randint(1, 2)
                 if randomNumber == 1:
-                    self.spawnEnemie(enemie.WhiteEnemie((0, 0)))
+                    self.spawnEnemie(enemie.WhiteEnemie((0, 0), self._speedIncrease))
                 else:
-                    self.spawnEnemie(enemie.PurpleEnemie((0, 0)))
+                    self.spawnEnemie(enemie.PurpleEnemie((0, 0), self._speedIncrease))
 
             if self._bombTimer <= 0:
                 self._spawnBomb()
@@ -181,7 +192,7 @@ class DodgeGame:
             enemieAux.move(self)
             enemieAux.paint(gameDisplay)
             for bombAux in self._explodedBombsList:
-                if bombAux.collide(enemieAux):
+                if bombAux.explosionCollide(enemieAux):
                     self.killEnemie(enemieAux)
 
     def paintPlayers(self, gameDisplay, playerPositionList):
@@ -212,7 +223,7 @@ class DodgeGame:
             bombAux.paint(gameDisplay)
 
         for bombAux2 in self._explodedBombsList:
-            bombAux2.paint(gameDisplay)
+            bombAux2.paintRange(gameDisplay)
 
     def paintMessage(self, gameDisplay, mousePosition, message):
         font = self._pygame.font.SysFont(None, 30, True, False)
@@ -247,6 +258,9 @@ class DodgeGame:
             self._enemieTimer -= 1
             self._difficultyTimer -= 1
             self._bombTimer -= 1
+            if self._difficultyTimer <= 0:
+                self._difficultyTimer = 10
+                self._increaseDifficulty()
             for bombAux in self._explodedBombsList:
                 bombAux.decTimer()
                 if bombAux.isTimeUp():

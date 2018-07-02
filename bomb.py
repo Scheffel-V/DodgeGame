@@ -3,11 +3,14 @@ import rectangle
 import pygame
 
 class Bomb(rectangle.Rectangle):
-    def __init__(self, position):
+    def __init__(self, position, pygame):
         super(Bomb, self).__init__(position, config.BOMB_WIDTH, config.BOMB_HEIGHT, config.BOMB_IMAGE)
         self._exploded = False
         self._catched = False
         self._timer = 2
+        self._range = 125
+        self._pygame = pygame
+        self._mouseCircleSurface = self._pygame.Surface(config.DISPLAY_SIZE)
 
     def decTimer(self):
         self._timer -= 1
@@ -33,10 +36,28 @@ class Bomb(rectangle.Rectangle):
                 return True
         return False
 
+    def explosionCollide(self, enemie):
+        circleX, circleY = self.getPosition()
+        rectX, rectY = enemie.getPosition()
+        circleDistanceX = abs(circleX - rectX);
+        circleDistanceY = abs(circleY - rectY);
+
+        if circleDistanceX > (enemie.getWidth() / 2 + self._range):
+            return False
+        if circleDistanceY > (enemie.getHeight() / 2 + self._range):
+            return False
+        if circleDistanceX <= (enemie.getWidth() / 2):
+            return True
+        if circleDistanceY <= (enemie.getHeight() / 2):
+            return True
+
+        cornerDistance_sq = ((circleDistanceX - enemie.getWidth() / 2) ** 2) + ((circleDistanceY - enemie.getHeight() / 2) ** 2)
+
+        return cornerDistance_sq <= (self._range ** 2)
+
     def paintRange(self, gameDisplay):
-        _mouseCircleSurface = self._pygame.Surface(config.Config.MOUSE_CIRCLE_SURFACE)
-        self._mouseCircleSurface.fill(config.Config.CK)
-        self._mouseCircleSurface.set_colorkey(config.Config.CK)
-        pygame.draw.circle(self._mouseCircleSurface, (254, 0, 0), self.getCenter(), self._range, self._range)
+        self._mouseCircleSurface.fill((255, 0, 0))
+        self._mouseCircleSurface.set_colorkey((255, 0, 0))
+        self._pygame.draw.circle(self._mouseCircleSurface, (254, 0, 0), self.getCenter(), self._range, self._range)
         self._mouseCircleSurface.set_alpha(150)
         gameDisplay.blit(self._mouseCircleSurface, (0, 0))

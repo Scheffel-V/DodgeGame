@@ -105,12 +105,12 @@ class Enemie(rectangle.Rectangle):
         return
 
 class BlueEnemie(Enemie):
-    def __init__(self, position):
+    def __init__(self, position, speedIncrease):
         super(BlueEnemie, self).__init__(position,
                                            config.ENEMIE_BLUE_WIDTH,
                                            config.ENEMIE_BLUE_HEIGHT,
                                            config.ENEMIE_BLUE_IMAGE_small,
-                                           config.ENEMIE_BLUE_SPEED)
+                                           config.ENEMIE_BLUE_SPEED + speedIncrease)
 
     def move(self, dodgeGame):
         self._target = self.getTarget(dodgeGame)
@@ -123,12 +123,12 @@ class BlueEnemie(Enemie):
         return "BlueEnemie"
 
 class YellowEnemie(Enemie):
-    def __init__(self, position):
+    def __init__(self, position, speedIncrease):
         super(YellowEnemie, self).__init__(position,
                                            config.ENEMIE_YELLOW_WIDTH,
                                            config.ENEMIE_YELLOW_HEIGHT,
                                            config.ENEMIE_YELLOW_IMAGE_small,
-                                           config.ENEMIE_YELLOW_SPEED)
+                                           config.ENEMIE_YELLOW_SPEED + speedIncrease)
 
     def move(self, dodgeGame):
         self._target = self.getTarget(dodgeGame)
@@ -141,12 +141,12 @@ class YellowEnemie(Enemie):
         return "YellowEnemie"
 
 class RedEnemie(Enemie):
-    def __init__(self, position):
+    def __init__(self, position, speedIncrease):
         super(RedEnemie, self).__init__(position,
                                            config.ENEMIE_RED_WIDTH,
                                            config.ENEMIE_RED_HEIGHT,
                                            config.ENEMIE_RED_IMAGE_small,
-                                           config.ENEMIE_RED_SPEED)
+                                           config.ENEMIE_RED_SPEED + speedIncrease)
 
     def move(self, dodgeGame):
         self._target = self.getTarget(dodgeGame)
@@ -159,12 +159,12 @@ class RedEnemie(Enemie):
         return "RedEnemie"
 
 class GreenEnemie(Enemie):
-    def __init__(self, position):
+    def __init__(self, position, speedIncrease):
         super(GreenEnemie, self).__init__(position,
                                            config.ENEMIE_GREEN_WIDTH,
                                            config.ENEMIE_GREEN_HEIGHT,
                                            config.ENEMIE_GREEN_IMAGE_small,
-                                           config.ENEMIE_GREEN_SPEED)
+                                           config.ENEMIE_GREEN_SPEED + speedIncrease)
 
     def move(self, dodgeGame):
         self._target = self.getTarget(dodgeGame)
@@ -177,12 +177,12 @@ class GreenEnemie(Enemie):
         return "GreenEnemie"
 
 class PurpleEnemie(Enemie):
-    def __init__(self, position):
+    def __init__(self, position, speedIncrease):
         super(PurpleEnemie, self).__init__(position,
                                            config.ENEMIE_PURPLE_WIDTH,
                                            config.ENEMIE_PURPLE_HEIGHT,
                                            config.ENEMIE_PURPLE_IMAGE_small,
-                                           config.ENEMIE_PURPLE_SPEED)
+                                           config.ENEMIE_PURPLE_SPEED + speedIncrease)
         self._direction = random.randint(1,2) # 1 = right, 2 = left
         randomPosition = None
         if self._direction == 1:
@@ -215,12 +215,12 @@ class PurpleEnemie(Enemie):
         return "PurpleEnemie"
 
 class WhiteEnemie(Enemie):
-    def __init__(self, position):
+    def __init__(self, position, speedIncrease):
         super(WhiteEnemie, self).__init__(position,
                                            config.ENEMIE_WHITE_WIDTH,
                                            config.ENEMIE_WHITE_HEIGHT,
                                            config.ENEMIE_WHITE_IMAGE_small,
-                                           config.ENEMIE_WHITE_SPEED)
+                                           config.ENEMIE_WHITE_SPEED + speedIncrease)
         self._direction = random.randint(1,2) # 1 = down, 2 = up
         randomPosition = None
         if self._direction == 1:
