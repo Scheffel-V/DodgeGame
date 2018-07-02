@@ -4,8 +4,8 @@ import config
 import random
 import os
 import sys
-sys.path.insert(0, './pywiiuse')
-import wiiuse.pygame_wiimote as pygame_wiimote
+#sys.path.insert(0, './pywiiuse')
+#import wiiuse.pygame_wiimote as pygame_wiimote
 import screen as SCREEN
 import player as PLAYER
 import game as GAME
@@ -49,6 +49,7 @@ class Game(SCREEN.Screen):
 
     def _loopHandler(self):
         dodgeGame = DODGEGAME.DodgeGame(self)
+        dodgeGame.playGameSong()
         playerPositionList = []
         while not self.isGameExited():
             playerPosition = None
@@ -62,20 +63,22 @@ class Game(SCREEN.Screen):
                             self.turnOffFPS()
                         else:
                             self.turnOnFPS()
-                    if event.key == self._pygame.K_p:
+                    elif event.key == self._pygame.K_p:
                         if dodgeGame.isRunning():
                             if dodgeGame.isPaused():
                                 dodgeGame.resumeGame()
                             else:
                                 dodgeGame.pauseGame()
+                    elif event.key == self._pygame.K_SPACE:
+                        dodgeGame.singlePlayerExplodeBomb()
                 elif event.type == self._pygame.USEREVENT + 1 and not dodgeGame.isPaused():
                     dodgeGame.decTimer()
-                elif event.type == pygame_wiimote.WIIMOTE_IR:
-                    mousePosition = event.cursor[:2]
-                    playerPosition = (event.id, mousePosition)
-                    playerPositionList.append(playerPosition)
-                elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                    print(event.button, 'pressed on', event.id)
+                #elif event.type == pygame_wiimote.WIIMOTE_IR:
+                #    mousePosition = event.cursor[:2]
+                #    playerPosition = (event.id, mousePosition)
+                #    playerPositionList.append(playerPosition)
+                #elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
+                #    print(event.button, 'pressed on', event.id)
 
             if dodgeGame.isRunning():
                 if dodgeGame.isPaused():
@@ -83,12 +86,17 @@ class Game(SCREEN.Screen):
                     self.getClock().tick()
                     self._displayUpdate()
                 else:
+                    mousePosition = pygame.mouse.get_pos()
+                    playerPosition = (1, mousePosition)
+                    playerPositionList = []
+                    playerPositionList.append(playerPosition)
                     dodgeGame.paintAllStuff(self._gameDisplay, playerPositionList)
                     playerPositionList = []
                     self.paintAllStuff(self._gameDisplay, self.getClock())
                     self.getClock().tick()
                     self._displayUpdate()
                     self.getClock().tick(config.FPS)      # Determina o FPS máximo
+        dodgeGame.stopGameSong()
         endGame = ENDGAME.EndGame(self._pygame, self._menu, dodgeGame.getGameTime())
         endGame.start()
 

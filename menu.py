@@ -8,8 +8,9 @@ import player as PLAYER
 import game as GAME
 import dodgegame as DODGEGAME
 import enemie as ENEMIE
-sys.path.insert(0, './pywiiuse')
-import wiiuse.pygame_wiimote as pygame_wiimote
+import records as RECORDS
+#sys.path.insert(0, './pywiiuse')
+#import wiiuse.pygame_wiimote as pygame_wiimote
 
 class Menu(SCREEN.Screen):
     def __init__(self, pygame):
@@ -21,9 +22,13 @@ class Menu(SCREEN.Screen):
         self._mainImage = self._mainMenuImage0
         self._numberOfPlayers = 0
         self._enemiesOnTheScreen = []
+        self._sound = None
         for i in range(0, 8):
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
+
+    def _initializeSound(self):
+        self._sound = self._pygame.mixer.Sound(config.MENU_SONG)
 
     def _changeBackImage(self):
         if self._selectedOption == 0:
@@ -61,15 +66,22 @@ class Menu(SCREEN.Screen):
             self._enemiesOnTheScreen.append(self._generateEnemie())
 
     def _startGame(self):
+        self._sound.stop()
         game = GAME.Game(self._pygame, self)
-        game.start(self._numberOfPlayers)
+        #game.start(self._numberOfPlayers)
+        game.start(1)
+
+    def _showRecords(self):
+        self._sound.stop()
+        recordScreen = RECORDS.Records(self._pygame, self, -1)
+        recordScreen.start()
 
     def _handleSelectedButtonPress(self):
         if self._selectedOption == 0:
             self._startGame()
 
         elif self._selectedOption == 1:
-            pass
+            self._showRecords()
 
         elif self._selectedOption == 2:
             self._gameExit = True
@@ -127,6 +139,13 @@ class Menu(SCREEN.Screen):
             wm.enable_accels(1)
             wm.enable_ir(1, vres=(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT))
 
+    def _playSong(self):
+        self._sound.play(-1)
+        self._sound.set_volume(0.3)
+
+    def _stopSong(self):
+        self._sound.stop()
+
     def _loopHandler(self):
         idsList = []
         while not self.isGameExited():
@@ -135,13 +154,13 @@ class Menu(SCREEN.Screen):
                     self._gameExit = True
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
-                elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                    print(event.button, 'pressed on', event.id)
-                    self._handleWiimotePress(event)
-                elif event.type == pygame_wiimote.WIIMOTE_IR:
-                    if event.id not in idsList:
-                        print('Wiimote ', event.id, ' is ok!')
-                        idsList.append(event.id)
+                #elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
+                #    print(event.button, 'pressed on', event.id)
+                #    self._handleWiimotePress(event)
+                #elif event.type == pygame_wiimote.WIIMOTE_IR:
+                #    if event.id not in idsList:
+                #        print('Wiimote ', event.id, ' is ok!')
+                #        idsList.append(event.id)
                 elif event.type == 29:
                     if event.id not in idsList:
                         print('Wiimote ', event.id, ' is ok!')
@@ -153,12 +172,17 @@ class Menu(SCREEN.Screen):
         self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self._setTitle("MENU")
         self._updateScreen()
+        self._playSong()
 
     def start(self):
         self._pygame = pygame
+        self._pygame.mixer.pre_init(44100, -16, 2, 4096)
         self._pygame.init()
+        self._pygame.mixer.init()
+        self._initializeSound()
         self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self._setTitle("MENU")
         self._updateScreen()
-        self._findWiimotes()
+        self._playSong()
+        #self._findWiimotes()
         self._loopHandler()

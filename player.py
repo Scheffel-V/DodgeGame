@@ -9,6 +9,8 @@ class Player(rectangle.Rectangle):
         self._isAlive = True
         self._id = id
         self._lastPositions = [[0, 0], [0,0], [0,0], [0,0]]
+        self._bomb = None
+        self._haveBomb = False
 
     def kill(self, dodgeGame):
         self._isAlive = False
@@ -49,3 +51,16 @@ class Player(rectangle.Rectangle):
         lastPositions[0][0] = newPosition[0]
         lastPositions[0][1] = newPosition[1]
         self.setPosition(self.getMeanPosition())
+
+    def catchBomb(self, bomb):
+        self._bomb = bomb
+        self._haveBomb = True
+
+    def haveBomb(self):
+        return self._haveBomb
+
+    def explodeBomb(self, dodgeGame):
+        if self.haveBomb():
+            self._bomb.explode(dodgeGame, self.getPosition())
+            self._bomb = None
+            self._haveBomb = False

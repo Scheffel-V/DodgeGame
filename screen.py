@@ -3,8 +3,8 @@ import config
 import sys
 import random
 import os
-sys.path.insert(0, './pywiiuse')
-import wiiuse.pygame_wiimote as pygame_wiimote
+#sys.path.insert(0, './pywiiuse')
+#import wiiuse.pygame_wiimote as pygame_wiimote
 import abc
 
 class Screen:

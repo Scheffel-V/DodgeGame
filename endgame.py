@@ -8,8 +8,9 @@ import game as GAME
 import dodgegame as DODGEGAME
 import enemie as ENEMIE
 import screen as SCREEN
-sys.path.insert(0, './pywiiuse')
-import wiiuse.pygame_wiimote as pygame_wiimote
+import records as RECORDS
+#sys.path.insert(0, './pywiiuse')
+#import wiiuse.pygame_wiimote as pygame_wiimote
 
 class EndGame(SCREEN.Screen):
     def __init__(self, pygame, menu, time):
@@ -21,6 +22,11 @@ class EndGame(SCREEN.Screen):
         self._word = {1: ' ', 2: ' ', 3: ' ', 4: ' ', 5: ' ', 6: ' ', 7: ' ', 8: ' ', 9: ' ', 10: ' '}
         self._wordNumbers = {0: None, 1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None, 8: None, 9: None}
         self._selectedLetter = None
+        self._records = []
+        self._recordsNames = []
+        self._getRecords()
+        self._recordPosition = -1
+        self._showingRecords = False
 
     def _loadImages(self):
         self._image1 =  self._pygame.image.load(config.ENDGAME_BACKGROUND_IMAGE_1)
@@ -71,50 +77,134 @@ class EndGame(SCREEN.Screen):
         self._gameDisplay.blit(self._backgroundImage, (0, 0))
         self._gameDisplay.blit(self._mainImage, ((config.DISPLAY_WIDTH / 2) - (config.ENDGAME_WIDTH / 2),
                                                  (config.DISPLAY_HEIGHT / 2) - (config.ENDGAME_HEIGHT / 2)))
-    def _saveRecord(self):
-        recordsFile = open("records.txt", "r+")
-        records = []
+
+    def _getWord(self):
+        word = ""
         for i in range(1, 11):
-            records.append(int((recordsFile.readline()).replace('\n', '')))
+            word = word + self._word[i]
+        word = word + "\n"
+        return word
+
+    def _isTopScore(self):
+        isTopScore = False
+        for i in range(0, 10):
+            if self._gameTime > self._records[i]:
+                isTopScore = True
+                self._recordPosition = i
+                return isTopScore
+        return isTopScore
+
+    def _getRecords(self):
+        recordsFile = open("records.txt", "r+")
+        for i in range(1, 11):
+            self._records.append(int((recordsFile.readline()).replace('\n', '')))
+            self._recordsNames.append(recordsFile.readline())
         recordsFile.close()
 
+    def _saveRecord(self):
         for i in range(0, 10):
-            if self._gameTime > records[i]:
+            if self._gameTime > self._records[i]:
                 j = 9
                 while j > i:
-                    records[j] = records[j - 1]
+                    self._records[j] = self._records[j - 1]
+                    self._recordsNames[j] = self._recordsNames[j - 1]
                     j -= 1
-                records[j] = self._gameTime
+                self._records[j] = self._gameTime
+                print(self._getWord())
+                self._recordsNames[j] = self._getWord()
                 break
 
         recordsFile = open("records.txt", "w")
-        print(records)
+        print(self._records)
+        print(self._recordsNames)
         for i in range(0, 9):
-            recordsFile.write((str(records[i])).__add__("\n"))
-        recordsFile.write((str(records[9])))
+            recordsFile.write((str(self._records[i])).__add__("\n"))
+            recordsFile.write(self._recordsNames[i])
+        recordsFile.write((str(self._records[9])).__add__("\n"))
+        recordsFile.write((self._recordsNames[9]).replace('\n', ''))
         recordsFile.close()
 
     def _showRecords(self):
-        pass
+        recordScreen = RECORDS.Records(self._pygame, self._menu, self._recordPosition)
+        recordScreen.start()
+        self._gameExit = True
+        self._showingRecords = True
 
     def _backToMenu(self):
         self._gameExit = True
 
     def _deleteLetter(self):
-        pass
+        self._word[self._selectedOption + 1] = ' '
+        self._moveLetterPosition('Left')
 
     def _handleKeyboardLetterInsertion(self, event):
-        pass
+        if event.key == self._pygame.K_a:
+            self._word[self._selectedOption + 1] = 'a'
+        elif event.key == self._pygame.K_b:
+            self._word[self._selectedOption + 1] = 'b'
+        elif event.key == self._pygame.K_c:
+            self._word[self._selectedOption + 1] = 'c'
+        elif event.key == self._pygame.K_d:
+            self._word[self._selectedOption + 1] = 'd'
+        elif event.key == self._pygame.K_e:
+            self._word[self._selectedOption + 1] = 'e'
+        elif event.key == self._pygame.K_f:
+            self._word[self._selectedOption + 1] = 'f'
+        elif event.key == self._pygame.K_g:
+            self._word[self._selectedOption + 1] = 'g'
+        elif event.key == self._pygame.K_h:
+            self._word[self._selectedOption + 1] = 'h'
+        elif event.key == self._pygame.K_i:
+            self._word[self._selectedOption + 1] = 'i'
+        elif event.key == self._pygame.K_j:
+            self._word[self._selectedOption + 1] = 'j'
+        elif event.key == self._pygame.K_k:
+            self._word[self._selectedOption + 1] = 'k'
+        elif event.key == self._pygame.K_l:
+            self._word[self._selectedOption + 1] = 'l'
+        elif event.key == self._pygame.K_m:
+            self._word[self._selectedOption + 1] = 'm'
+        elif event.key == self._pygame.K_n:
+            self._word[self._selectedOption + 1] = 'n'
+        elif event.key == self._pygame.K_o:
+            self._word[self._selectedOption + 1] = 'o'
+        elif event.key == self._pygame.K_p:
+            self._word[self._selectedOption + 1] = 'p'
+        elif event.key == self._pygame.K_q:
+            self._word[self._selectedOption + 1] = 'q'
+        elif event.key == self._pygame.K_r:
+            self._word[self._selectedOption + 1] = 'r'
+        elif event.key == self._pygame.K_s:
+            self._word[self._selectedOption + 1] = 's'
+        elif event.key == self._pygame.K_t:
+            self._word[self._selectedOption + 1] = 't'
+        elif event.key == self._pygame.K_u:
+            self._word[self._selectedOption + 1] = 'u'
+        elif event.key == self._pygame.K_v:
+            self._word[self._selectedOption + 1] = 'v'
+        elif event.key == self._pygame.K_w:
+            self._word[self._selectedOption + 1] = 'w'
+        elif event.key == self._pygame.K_x:
+            self._word[self._selectedOption + 1] = 'x'
+        elif event.key == self._pygame.K_y:
+            self._word[self._selectedOption + 1] = 'y'
+        elif event.key == self._pygame.K_z:
+            self._word[self._selectedOption + 1] = 'z'
+        elif event.key == self._pygame.K_SPACE:
+            self._word[self._selectedOption + 1] = ' '
+        else:
+            pass
+        self._moveLetterPosition('Right')
 
     def _handleKeyPress(self, event):
-        if event.key == self._pygame.K_ENTER:
+        if event.key == self._pygame.K_INSERT:
             self._saveRecord()
             self._showRecords()
 
-        if event.key == self._pygame.K_ESCAPE:
+        elif event.key == self._pygame.K_ESCAPE:
             self._backToMenu()
 
-        if event.key == self._pygame.K_BACKSPACE:
+        elif event.key == self._pygame.K_BACKSPACE:
             self._deleteLetter()
 
         else:
@@ -122,7 +212,6 @@ class EndGame(SCREEN.Screen):
 
     def _addLetter(self):
         self._word[self._selectedOption + 1] = self._getLetter(self._wordNumbers[self._selectedOption])
-        print(self._word)
 
     def _getLetter(self, selectedLetter):
         return {
@@ -207,7 +296,7 @@ class EndGame(SCREEN.Screen):
 
     def paintTime(self, gameDisplay):
         font = self._pygame.font.SysFont(None, 50, True, False)
-        text = font.render("TIME:%d" % self._gameTime, True, ((140, 160, 50)))
+        text = font.render("TIME:%d" % self._gameTime, True, (140, 160, 50))
         gameDisplay.blit(text, (0, 0))
 
     def _paintWord(self, gameDisplay):
@@ -224,13 +313,17 @@ class EndGame(SCREEN.Screen):
                     self._gameExit = True
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
-                elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                    print(event.button, 'pressed on', event.id)
-                    self._handleWiimotePress(event)
+                #elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
+                #    print(event.button, 'pressed on', event.id)
+                #    self._handleWiimotePress(event)
             self._updateScreen()
-        self._menu.restart()
+        if not self._showingRecords:
+            self._menu.restart()
 
     def start(self):
-        self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
-        self._setTitle("YOU WIN!")
-        self._loopHandler()
+        if self._isTopScore():
+            self._setDisplay(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
+            self._setTitle("YOU WIN!")
+            self._loopHandler()
+        else:
+            self._showRecords()

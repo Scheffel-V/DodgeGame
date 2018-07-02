@@ -17,6 +17,18 @@ DISPLAY_WIDTH = 1280
 DISPLAY_HEIGHT = 720
 DISPLAY_SIZE = (DISPLAY_WIDTH, DISPLAY_HEIGHT)
 
+#BOMB
+BOMB_IMAGE = "imagens/firetrap2.png"
+BOMB_WIDTH = 32
+BOMB_HEIGHT = 32
+
+#SOUNDS
+DEATH_SOUND = "sounds/death_sound.wav"
+WIN_SOUND = "sounds/win_sound.wav"
+EXPLOSION_SOUND = "sounds/explosion_sound.wav"
+GAME_SONG = "sounds/game_song.wav"
+MENU_SONG = "sounds/menu_song.wav"
+
 #Map
 MAP_BACKGROUND = "imagens/black.jpg"
 
