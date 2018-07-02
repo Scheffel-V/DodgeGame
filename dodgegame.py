@@ -137,7 +137,6 @@ class DodgeGame:
         self._bombsList.remove(bomb)
 
     def singlePlayerExplodeBomb(self):
-        print(self._playersList)
         self._playersList[0].explodeBomb(self)
 
     def multiPlayerExplodeBomb(self, id):
@@ -147,11 +146,11 @@ class DodgeGame:
                     playerAux.explodeBomb(self)
 
     def playGameSong(self):
-        self._sounds[4].play(-1)
-        self._sounds[4].set_volume(0.3)
+        self._sounds[0].play(-1)
+        self._sounds[0].set_volume(0.3)
 
     def stopGameSong(self):
-        self._sounds[4].stop()
+        self._sounds[0].stop()
 
     def _playWinSound(self):
         self._sounds[1].play()

@@ -108,8 +108,6 @@ class Game(SCREEN.Screen):
             player = PLAYER.Player(i+1, (100, 100), 64, 64, i)
             self._playersList.append(player)
 
-        print(self._playersList)
-
         self._loopHandler()
 
     def start(self, numberOfPlayers):

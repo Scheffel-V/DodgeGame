@@ -90,7 +90,6 @@ class Records(SCREEN.Screen):
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
                 elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                    print(event.button, 'pressed on', event.id)
                     self._handleWiimotePress(event)
             self._updateScreen()
         self._menu.restart()

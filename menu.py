@@ -154,7 +154,6 @@ class Menu(SCREEN.Screen):
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
                 elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                    print(event.button, 'pressed on', event.id)
                     self._handleWiimotePress(event)
                 elif event.type == pygame_wiimote.WIIMOTE_IR:
                     if event.id not in idsList:

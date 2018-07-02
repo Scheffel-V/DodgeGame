@@ -110,7 +110,6 @@ class EndGame(SCREEN.Screen):
                     self._recordsNames[j] = self._recordsNames[j - 1]
                     j -= 1
                 self._records[j] = self._gameTime
-                print(self._getWord())
                 self._recordsNames[j] = self._getWord()
                 break
 
@@ -287,6 +286,7 @@ class EndGame(SCREEN.Screen):
 
         elif event.button == 'A':
             self._saveRecord()
+            self._showRecords()
 
         elif event.button == 'B':
             self._backToMenu()
@@ -314,7 +314,6 @@ class EndGame(SCREEN.Screen):
                 elif event.type == pygame.KEYDOWN:
                     self._handleKeyPress(event)
                 elif event.type == pygame_wiimote.WIIMOTE_BUTTON_PRESS:
-                    print(event.button, 'pressed on', event.id)
                     self._handleWiimotePress(event)
             self._updateScreen()
         if not self._showingRecords:
